@@ -1,0 +1,87 @@
+package com.resumed.sqtwin.model;
+
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+
+@Table(name = "web_gid")
+public class WebGid {
+    @Id
+    private Integer gid;
+/*
+*    <id property="gid" column="gid"></id>
+      <result property="rid" column="rid"></result>
+      <result property="uname" column="real_name"></result>
+      <result property="birthday" column="birthday"></result>
+      <result property="sex" column="sex"></result>
+* */
+    @Transient
+    private String rid ;
+    @Transient
+    private String uname ;
+    @Transient
+    private String birthday ;
+    @Transient
+    private String sex ;
+
+   /* @Transient
+    private WebProfile mWebProfile ;*/
+
+    /**
+     * @return gid
+     */
+    public Integer getGid() {
+        return gid;
+    }
+
+    /**
+     * @param gid
+     */
+    public void setGid(Integer gid) {
+        this.gid = gid;
+    }
+
+
+
+
+   /* public WebProfile getmWebProfile() {
+        return mWebProfile;
+    }
+
+    public void setmWebProfile(WebProfile mWebProfile) {
+        this.mWebProfile = mWebProfile;
+    }*/
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+}

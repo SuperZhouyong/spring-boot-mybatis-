@@ -1,0 +1,20 @@
+# 生产环境配置
+zhenduan.url = http://192.168.168.77:8080/sqt_common_service/rest/resume/getDiagnose/
+
+debug=true
+#简历医生数据库
+spring.datasource.one.url=jdbc:mysql://192.168.0.66:3306/sqtresumed?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
+spring.datasource.one.username=web
+spring.datasource.one.password=sa
+spring.datasource.one.driver-class-name=com.mysql.jdbc.Driver
+#搜前途数据库
+spring.datasource.two.url=jdbc:mysql://192.168.0.66:3306/sqtcom?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
+spring.datasource.two.username=web
+spring.datasource.two.password=sa
+spring.datasource.two.driver-class-name=com.mysql.jdbc.Driver
+#77服务器数据库
+spring.datasource.three.url=jdbc:mysql://192.168.0.77:3306/sqtdata?useUnicode=true&characterEncoding=utf-8&useSSL=false&zeroDateTimeBehavior=convertToNull
+spring.datasource.three.username=web
+spring.datasource.three.password=sa
+spring.datasource.three.driver-class-name=com.mysql.jdbc.Driver
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.WebGidMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebGid">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="gid" jdbcType="INTEGER" property="gid" />
+    <collection property="web_profile" ofType="com.resumed.sqtwin.model.WebProfile">
+    <!--  <id property="gid" column="gid"></id>-->
+      <result property="rid" column="rid"/>
+      <result property="uname" column="real_name"/>
+      <result property="birthday" column="birthday"/>
+      <result property="sex" column="sex"/>
+    </collection>
+  </resultMap>
+   <!-- <select id="findById" parameterType="int" resultMap="departMap">
+        select * from department d left join user u on d.id=u.did  where d.id=#{id}
+    </select>-->
+  <select id="queryList" resultType="com.resumed.sqtwin.model.WebGid">
+      select * from web_gid u left join web_profile d on u.gid=d.gid where u.gid=#{id}
+    </select>
+  <!--<insert id="InsertWebGid" parameterType="com.resumed.sqtwin.model.WebGid">
+    <selectKey keyProperty="gid" order="AFTER" resultType="java.lang.Integer">
+      select last_insert_id();
+    </selectKey>
+    insert into web_gid value ();
+  </insert>-->
+</mapper>

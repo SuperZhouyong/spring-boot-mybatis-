@@ -1,0 +1,580 @@
+package com.resumed.sqtwin.model;
+
+import com.resumed.sqtwin.utils.DataUtil;
+
+import java.util.Date;
+import javax.persistence.*;
+
+@Table(name = "web_profile")
+public class WebProfile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private Integer gid;
+
+    private String rid;
+
+    /**
+     * 真实姓名
+     */
+    @Column(name = "real_name")
+    private String realName;
+
+    /**
+     * 出生日期
+     */
+    private Date birthday;
+
+    public void setBirthdata(String birthdata) {
+        this.birthdata = birthdata;
+    }
+
+    public String getBirthdata() {
+        return birthdata;
+    }
+
+    public void setBirthdata(Date date) {
+        if (birthdata == null)
+            this.birthdata = DataUtil.dfDate.get().format(date);
+    }
+
+    /*
+     * 出生日期 String
+     * */
+    @Transient
+    private String birthdata;
+
+    /**
+     * 1-未婚 2-已婚  3-保密
+     */
+    private Byte marital;
+
+    private Byte sex;
+
+    /**
+     * 户籍城市
+     */
+    @Column(name = "household_city_name")
+    private String householdCityName;
+
+    /**
+     * 户籍城市
+     */
+    @Column(name = "household_city_id")
+    private Integer householdCityId;
+
+    /**
+     * 详细地址
+     */
+    private String address;
+
+    /**
+     * 居住地
+     */
+    @Column(name = "city_name")
+    private String cityName;
+
+    /**
+     * 居住城市
+     */
+    @Column(name = "city_id")
+    private Integer cityId;
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
+    /**
+     * 自我描述
+     */
+    @Transient
+    private String describe;
+
+    /**
+     * 0.离职，正在找工作 1.在职，正在找工作 2.在职，有好的机会才考虑 3.暂无跳槽打算
+     */
+    @Column(name = "work_status")
+    private Byte workStatus;
+
+    private String email;
+
+    private String phone;
+
+    /**
+     * 0:未验证; 1:验证
+     */
+    @Column(name = "phone_status")
+    private Byte phoneStatus;
+
+    /**
+     * 薪酬范围
+     */
+    @Column(name = "salary_start")
+    private Integer salaryStart;
+
+    /**
+     * 薪酬范围
+     */
+    @Column(name = "salary_end")
+    private Integer salaryEnd;
+
+    /**
+     * 1 面议
+     */
+    @Column(name = "salary_discuss")
+    private Byte salaryDiscuss;
+
+    /**
+     * 0 待审核 1:通过,,99未通过
+     */
+    @Column(name = "avatar_status")
+    private Byte avatarStatus;
+
+    /**
+     * 未通过的头像路径
+     */
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    /**
+     * 通过验证的头像图片
+     */
+    @Column(name = "avatar_ture_url")
+    private String avatarTureUrl;
+
+    private String intentioncity;
+
+    private String intentioncityid;
+
+
+    // 婚姻状态名字
+    @Transient
+    private String maritalName;
+    // 工作状态名字
+    @Transient
+    private String workStatusName;
+
+    public String getMaritalName() {
+        return maritalName;
+    }
+
+    public void setMaritalName(String maritalName) {
+        this.maritalName = maritalName;
+    }
+
+    public String getWorkStatusName() {
+        return workStatusName;
+    }
+
+    public void setWorkStatusName(String workStatusName) {
+        this.workStatusName = workStatusName;
+    }
+
+    /**
+     * @return id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * @return gid
+     */
+    public Integer getGid() {
+        return gid;
+    }
+
+    /**
+     * @param gid
+     */
+    public void setGid(Integer gid) {
+        this.gid = gid;
+    }
+
+    /**
+     * @return rid
+     */
+    public String getRid() {
+        return rid;
+    }
+
+    /**
+     * @param rid
+     */
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+
+    /**
+     * 获取真实姓名
+     *
+     * @return real_name - 真实姓名
+     */
+    public String getRealName() {
+        return realName;
+    }
+
+    /**
+     * 设置真实姓名
+     *
+     * @param realName 真实姓名
+     */
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    /**
+     * 获取出生日期
+     *
+     * @return birthday - 出生日期
+     */
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    /**
+     * 设置出生日期
+     *
+     * @param birthday 出生日期
+     */
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+        setBirthdata(birthday);
+    }
+
+    /**
+     * 获取1-未婚 2-已婚  3-保密
+     *
+     * @return marital - 1-未婚 2-已婚  3-保密
+     */
+    public Byte getMarital() {
+        return marital;
+    }
+
+    /**
+     * 设置1-未婚 2-已婚  3-保密
+     *
+     * @param marital 1-未婚 2-已婚  3-保密
+     */
+    public void setMarital(Byte marital) {
+        this.marital = marital;
+    }
+
+    /**
+     * @return sex
+     */
+    public Byte getSex() {
+        return sex;
+    }
+
+    /**
+     * @param sex
+     */
+    public void setSex(Byte sex) {
+        this.sex = sex;
+    }
+
+    /**
+     * 获取户籍城市
+     *
+     * @return household_city_name - 户籍城市
+     */
+    public String getHouseholdCityName() {
+        return householdCityName;
+    }
+
+    /**
+     * 设置户籍城市
+     *
+     * @param householdCityName 户籍城市
+     */
+    public void setHouseholdCityName(String householdCityName) {
+        this.householdCityName = householdCityName;
+    }
+
+    /**
+     * 获取户籍城市
+     *
+     * @return household_city_id - 户籍城市
+     */
+    public Integer getHouseholdCityId() {
+        return householdCityId;
+    }
+
+    /**
+     * 设置户籍城市
+     *
+     * @param householdCityId 户籍城市
+     */
+    public void setHouseholdCityId(Integer householdCityId) {
+        this.householdCityId = householdCityId;
+    }
+
+    /**
+     * 获取详细地址
+     *
+     * @return address - 详细地址
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * 设置详细地址
+     *
+     * @param address 详细地址
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * 获取居住地
+     *
+     * @return city_name - 居住地
+     */
+    public String getCityName() {
+        return cityName;
+    }
+
+    /**
+     * 设置居住地
+     *
+     * @param cityName 居住地
+     */
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    /**
+     * 获取居住城市
+     *
+     * @return city_id - 居住城市
+     */
+    public Integer getCityId() {
+        return cityId;
+    }
+
+    /**
+     * 设置居住城市
+     *
+     * @param cityId 居住城市
+     */
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
+    }
+
+    /**
+     * 获取0.离职，正在找工作 1.在职，正在找工作 2.在职，有好的机会才考虑 3.暂无跳槽打算
+     *
+     * @return work_status - 0.离职，正在找工作 1.在职，正在找工作 2.在职，有好的机会才考虑 3.暂无跳槽打算
+     */
+    public Byte getWorkStatus() {
+        return workStatus;
+    }
+
+    /**
+     * 设置0.离职，正在找工作 1.在职，正在找工作 2.在职，有好的机会才考虑 3.暂无跳槽打算
+     *
+     * @param workStatus 0.离职，正在找工作 1.在职，正在找工作 2.在职，有好的机会才考虑 3.暂无跳槽打算
+     */
+    public void setWorkStatus(Byte workStatus) {
+        this.workStatus = workStatus;
+    }
+
+    /**
+     * @return email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @return phone
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * @param phone
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * 获取0:未验证; 1:验证
+     *
+     * @return phone_status - 0:未验证; 1:验证
+     */
+    public Byte getPhoneStatus() {
+        return phoneStatus;
+    }
+
+    /**
+     * 设置0:未验证; 1:验证
+     *
+     * @param phoneStatus 0:未验证; 1:验证
+     */
+    public void setPhoneStatus(Byte phoneStatus) {
+        this.phoneStatus = phoneStatus;
+    }
+
+    /**
+     * 获取薪酬范围
+     *
+     * @return salary_start - 薪酬范围
+     */
+    public Integer getSalaryStart() {
+        return salaryStart;
+    }
+
+    /**
+     * 设置薪酬范围
+     *
+     * @param salaryStart 薪酬范围
+     */
+    public void setSalaryStart(Integer salaryStart) {
+        this.salaryStart = salaryStart;
+    }
+
+    /**
+     * 获取薪酬范围
+     *
+     * @return salary_end - 薪酬范围
+     */
+    public Integer getSalaryEnd() {
+        return salaryEnd;
+    }
+
+    /**
+     * 设置薪酬范围
+     *
+     * @param salaryEnd 薪酬范围
+     */
+    public void setSalaryEnd(Integer salaryEnd) {
+        this.salaryEnd = salaryEnd;
+    }
+
+    /**
+     * 获取1 面议
+     *
+     * @return salary_discuss - 1 面议
+     */
+    public Byte getSalaryDiscuss() {
+        return salaryDiscuss;
+    }
+
+    /**
+     * 设置1 面议
+     *
+     * @param salaryDiscuss 1 面议
+     */
+    public void setSalaryDiscuss(Byte salaryDiscuss) {
+        this.salaryDiscuss = salaryDiscuss;
+    }
+
+    /**
+     * 获取0 待审核 1:通过,,99未通过
+     *
+     * @return avatar_status - 0 待审核 1:通过,,99未通过
+     */
+    public Byte getAvatarStatus() {
+        return avatarStatus;
+    }
+
+    /**
+     * 设置0 待审核 1:通过,,99未通过
+     *
+     * @param avatarStatus 0 待审核 1:通过,,99未通过
+     */
+    public void setAvatarStatus(Byte avatarStatus) {
+        this.avatarStatus = avatarStatus;
+    }
+
+    /**
+     * 获取未通过的头像路径
+     *
+     * @return avatar_url - 未通过的头像路径
+     */
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    /**
+     * 设置未通过的头像路径
+     *
+     * @param avatarUrl 未通过的头像路径
+     */
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    /**
+     * 获取通过验证的头像图片
+     *
+     * @return avatar_ture_url - 通过验证的头像图片
+     */
+    public String getAvatarTureUrl() {
+        return avatarTureUrl;
+    }
+
+    /**
+     * 设置通过验证的头像图片
+     *
+     * @param avatarTureUrl 通过验证的头像图片
+     */
+    public void setAvatarTureUrl(String avatarTureUrl) {
+        this.avatarTureUrl = avatarTureUrl;
+    }
+
+    /**
+     * @return intentioncity
+     */
+    public String getIntentioncity() {
+        return intentioncity;
+    }
+
+    /**
+     * @param intentioncity
+     */
+    public void setIntentioncity(String intentioncity) {
+        this.intentioncity = intentioncity;
+    }
+
+    /**
+     * @return intentioncityid
+     */
+    public String getIntentioncityid() {
+        return intentioncityid;
+    }
+
+    /**
+     * @param intentioncityid
+     */
+    public void setIntentioncityid(String intentioncityid) {
+        this.intentioncityid = intentioncityid;
+    }
+
+
+}

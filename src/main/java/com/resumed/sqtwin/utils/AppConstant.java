@@ -1,0 +1,112 @@
+package com.resumed.sqtwin.utils;
+
+import org.springframework.beans.factory.annotation.Value;
+
+/**
+ * @auther Super
+ * @data 2018/4/12 0012
+ * @time 上午 11:30
+ */
+public class AppConstant {
+    // 志平线上
+
+
+    //分享全路径
+    public static final String shareUrl = "http://192.168.0.66:8089/resumes/LookElectronicResume?share=";
+    // 加密密钥
+    public static final String KEY = "sqtapi123456";
+    // 名字全程
+    public static final String AppOffice = "http://192.168.0.41:9090/";
+
+    // 验证码发送短信
+    public static String postUrl = "http://sms.chanzor.com:8001/sms.aspx?action=send";
+    public static String MERGE_MSG = "注册验证码：XXXX，请您在2分钟内填写。如非本人操作，请忽略本短信【简历医生】";
+    public static String userName = "98ab35";
+    public static String passWord = "100007";
+    // 验证用1户是否存在志愿360的表中
+    public static String checkZHIYUAN = "https://192.168.0.66:8082/api/user/isUser";
+    /*tps*/
+    //ftp服务器ip地址
+    public static final String FTP_ADDRESS = "192.168.0.77";
+    //端口号
+    public static final int FTP_PORT = 21;
+    //用户名
+    public static final String FTP_USERNAME = "sqtftp";
+    //密码
+    public static final String FTP_PASSWORD = "sqt@2014";
+    //居住地 户籍地 中的热门城市
+    public static final String[] HouseName = {"北京", "上海", "广州", "深圳", "天津", "武汉", "西安", "成都", "大连", "南京", "青岛", "杭州", "苏州", "长沙", "厦门", "重庆"};
+    public static final String[] HouseId = {};
+
+    // 工作状态 1=>'离职，正在找工作',2=>'在职，正在找工作',3=>'在职，有好的机会才考虑',4=>'暂无跳槽打算',5=>'还在读书',6=>'应届生')
+    public static final String[] WorkStatus = {"离职，正在找工作", "在职，正在找工作", "在职，有好的机会才考虑", "暂无跳槽打算", "还在读书", "应届生"};
+    // 薪资  11=>'面议',
+    //        1=>'2K-4K',
+    //        2=>'4K-6K',
+    //        3=>'6K-8K',
+    //        4=>'8K-10K',
+    //        5=>'10K-12K',
+    //        6=>'12K-15K',
+    //        7=>'15K-20K',
+    //        8=>'20K-40K',
+    //        9=>'40K-80K',
+    //        10=>'80K以上',
+    public static final String[] SalaryNum = {"面议", "2K-4K", "4K-6K", "6K-8K", "8K-10K", "10K-12K", "12K-15K", "15K-20K", "20K-40K", "40K-80K", "80K以上",};
+    //婚姻状态
+    public static final String[] marrayStatus = {"未婚", "已婚", "保密"}; //1 2 3;
+    // 学历信息
+    public static final String[] educationSttus = {"博士", "硕士", "本科", "大专"};
+    // 技能熟练度
+    public static final String[] skillLevel = {"了解", "熟悉", "熟练", "精通"};
+    //  企业规模
+    public static final String[] enterpriseScale = {"20人以下", "20-50人", "51-100人", "101-500人", "501-1000人", "1001-10000人", "10000人以上"};
+    // 企业性质 EnterpriseNature
+    public static final String[] EnterpriseNature = {"外资企业", "合资企业", "国有企事业单位", "民营企业", "外企代表处", "其他性质"};
+
+    public static final String[] CompareSymbol = {"大于", "小于", "不在", "不是", "少于", "多于"};
+
+    public static final String[] postionOne = {"中级", "高级", "总监", "主管", "总经理", "GM", "副总经理", "总裁", " VP", "副总裁", " FVP", "首席", "CTO", "CEO", "COO", "CFO", "CIO", "CCO", "CDO", "HRD", "OD", "MD"};
+    //    中级/高级/总监/主管/总经理（或GM）/副总经理/总裁（或 VP）/副总裁（或 FVP）/首席/CTO/CEO/COO/CFO/CIO/CCO/CDO/HRD/OD/MD字样；
+// 2、工作经历总时长小于2年，工作经历中职位名称出现 高级/总监/总经理（或GM）/副总经理/总裁（或 VP）/副总裁（或 FVP）/首席/CTO/CEO/COO/CFO/CIO/CCO/CDO/HRD/OD/MD
+    public static final String[] postionTwo = {"高级", "总监", "总经理", "GM", "副总经理", "总裁", "VP", "副总裁", "FVP", "首席", "CTO", "CEO", "COO", "CFO", "CIO", "CCO", "CDO", "HRD", "OD", "MD"};
+    /*
+    *
+    *
+    * 教育经历中的学历
+public static $degreeArray = array(0"博士",2"硕士",3"本科",4"大专");
+
+【PHP】- 杨淳浩  2018/4/16 星期一 下午 18:33:37
+工作经历中的公司规模
+public static $companyScaleArray = array("20人以下","20-50人", "51-100人", "101-500人", "501-1000人","1001-10000人","10000人以上");
+下午 18:34:17
+【PHP】- 杨淳浩  2018/4/16 星期一 下午 18:34:17
+工作经历中的公司性质
+public static $companyTypeArray = array("外资企业","合资企业", "国有企事业单位", "民营企业", "外企代表处","其他性质");
+
+【PHP】- 杨淳浩  2018/4/16 星期一 下午 18:34:37
+技能中的级别
+public static $skillLevel =array(1"了解",2"熟悉",3"熟练",4"精通");
+
+【PHP】- 杨淳浩  2018/4/16 星期一 下午 18:35:41
+个人资料中的婚姻状态
+public static $userMarital = array(1"未婚",2"已婚",3"保密");
+
+【PHP】- 杨淳浩  2018/4/16 星期一 下午 18:35:52
+性别
+public static $userSex = array(1"男",2"女");
+下午 18:36:34
+【PHP】- 杨淳浩  2018/4/16 星期一 下午 18:36:34
+居住地 户籍地 中的热门城市
+public static $hot_job = array("北京","上海","广州","深圳","天津","武汉","西安","成都","大连","南京","青岛","杭州","苏州","长沙","厦门","重庆");
+
+【PHP】- 杨淳浩  2018/4/16 星期一 下午 18:37:06
+个人资料中的工作状态
+    *
+    * */
+
+    /*
+    * rid生成规则
+RD+ 1000000到9999999的随机数+时间戳
+插入并查询web_rid表，若不存在，则插入，否则重新生成一次再次查询
+    * */
+}
