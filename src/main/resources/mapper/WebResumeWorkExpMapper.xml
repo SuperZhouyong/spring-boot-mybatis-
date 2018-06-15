@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebResumeWorkExpMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebResumeWorkExp">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="work_exp_id" jdbcType="INTEGER" property="workExpId" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="rid" jdbcType="VARCHAR" property="rid" />
+    <result column="start_time" jdbcType="DATE" property="startTime" />
+    <result column="end_time" jdbcType="DATE" property="endTime" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="company_type_id" jdbcType="TINYINT" property="companyTypeId" />
+    <result column="industry_id" jdbcType="INTEGER" property="industryId" />
+    <result column="industry_name" jdbcType="VARCHAR" property="industryName" />
+    <result column="tpl_id" jdbcType="INTEGER" property="tplId" />
+    <result column="tpl_name" jdbcType="VARCHAR" property="tplName" />
+    <result column="job_title" jdbcType="VARCHAR" property="jobTitle" />
+    <result column="salary_start" jdbcType="INTEGER" property="salaryStart" />
+    <result column="salary_end" jdbcType="INTEGER" property="salaryEnd" />
+    <result column="rank" jdbcType="INTEGER" property="rank" />
+    <result column="scale_id" jdbcType="TINYINT" property="scaleId" />
+    <result column="load" jdbcType="TINYINT" property="load" />
+    <result column="p_work_exp_id" jdbcType="INTEGER" property="pWorkExpId" />
+    <result column="work_resp" jdbcType="LONGVARCHAR" property="workResp" />
+  </resultMap>
+</mapper>

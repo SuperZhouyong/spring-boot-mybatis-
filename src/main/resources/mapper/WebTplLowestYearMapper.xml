@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebTplLowestYearMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebTplLowestYear">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="head" jdbcType="VARCHAR" property="head" />
+    <result column="tail" jdbcType="VARCHAR" property="tail" />
+    <result column="lowest_year" jdbcType="TINYINT" property="lowestYear" />
+  </resultMap>
+</mapper>

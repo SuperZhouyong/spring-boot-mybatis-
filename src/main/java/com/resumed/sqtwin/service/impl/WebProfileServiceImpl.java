@@ -1,6 +1,6 @@
 package com.resumed.sqtwin.service.impl;
 
-import com.resumed.sqtwin.dao.WebProfileMapper;
+import com.resumed.sqtwin.dao.mapperone.WebProfileMapper;
 import com.resumed.sqtwin.model.WebProfile;
 import com.resumed.sqtwin.service.WebProfileService;
 import com.resumed.sqtwin.core.AbstractService;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -22,5 +23,10 @@ public class WebProfileServiceImpl extends AbstractService<WebProfile> implement
     @Override
     public WebProfile InsertResume() {
         return null;
+    }
+
+    @Override
+    public List<WebProfile> selectRegionalList(Integer gid) {
+        return webProfileMapper.selectRegionalList(gid);
     }
 }

@@ -1,0 +1,184 @@
+package com.resumed.sqtwin.model.requestbean;
+
+import com.resumed.sqtwin.model.*;
+
+import java.util.List;
+
+/**
+ * @auther Super
+ * @data 2018/4/16 0016
+ * @time 下午 19:28
+ */
+public class UpdateResume {
+    private int gid;
+
+    private String resumeTitle;
+
+    private String rid;
+
+    public int getGid() {
+        return gid;
+    }
+
+    public void setGid(int gid) {
+        this.gid = gid;
+    }
+
+    // 个人信息
+    private WebProfile webProfile;
+    //教育经历
+    private List<WebResumeEducation> webResumeEducation;
+    //工作经验
+    private List<WebResumeWorkExp> webResumeWorkExp;
+    // 项目经验
+    private List<WebResumeProjectExp> webResumeProjectExp;
+    //擅长技能
+    private List<WebResumeSkill> webResumeSkill;
+    //荣誉
+    private List<WebResumeHonor> webResumeHonor;
+    // 证书
+    private List<WebResumeCertificate> webResumeCertificate;
+
+    public String getResumeTitle() {
+        return resumeTitle;
+    }
+
+    public void setResumeTitle(String resumeTitle) {
+        this.resumeTitle = resumeTitle;
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+
+    public WebProfile getWebProfile() {
+        return webProfile;
+    }
+
+    public void setWebProfile(WebProfile webProfile) {
+        this.webProfile = webProfile;
+    }
+
+    public List<WebResumeEducation> getWebResumeEducation() {
+        return webResumeEducation;
+    }
+
+    public void setWebResumeEducation(List<WebResumeEducation> webResumeEducation) {
+        this.webResumeEducation = webResumeEducation;
+    }
+
+    public List<WebResumeWorkExp> getWebResumeWorkExp() {
+        return webResumeWorkExp;
+    }
+
+    public void setWebResumeWorkExp(List<WebResumeWorkExp> webResumeWorkExp) {
+        this.webResumeWorkExp = webResumeWorkExp;
+    }
+
+    public List<WebResumeProjectExp> getWebResumeProjectExp() {
+        return webResumeProjectExp;
+    }
+
+    public void setWebResumeProjectExp(List<WebResumeProjectExp> webResumeProjectExp) {
+        this.webResumeProjectExp = webResumeProjectExp;
+    }
+
+    public List<WebResumeSkill> getWebResumeSkill() {
+        return webResumeSkill;
+    }
+
+    public void setWebResumeSkill(List<WebResumeSkill> webResumeSkill) {
+        this.webResumeSkill = webResumeSkill;
+    }
+
+    public List<WebResumeHonor> getWebResumeHonor() {
+        return webResumeHonor;
+    }
+
+    public void setWebResumeHonor(List<WebResumeHonor> webResumeHonor) {
+        this.webResumeHonor = webResumeHonor;
+    }
+
+    public List<WebResumeCertificate> getWebResumeCertificate() {
+        return webResumeCertificate;
+    }
+
+    public void setWebResumeCertificate(List<WebResumeCertificate> webResumeCertificate) {
+        this.webResumeCertificate = webResumeCertificate;
+    }
+
+    /*// 个人信息
+    private UserinfoRequest userinfoRequest ;
+    //教育经历
+    private EducationRequest educationRequest ;
+    //工作经验
+    private WorkInfoRequest workInfoRequest;
+    // 项目经验
+    private ProjectExpRequest projectExpRequest;
+    //擅长技能
+    private SkillBeanRequest skillBeanRequest ;
+    //荣誉
+    private HonorBenaRequest honorBenaRequest;
+    // 证书
+    private CertificateRequest certificateRequest;
+
+    public UserinfoRequest getUserinfoRequest() {
+        return userinfoRequest;
+    }
+
+    public void setUserinfoRequest(UserinfoRequest userinfoRequest) {
+        this.userinfoRequest = userinfoRequest;
+    }
+
+    public EducationRequest getEducationRequest() {
+        return educationRequest;
+    }
+
+    public void setEducationRequest(EducationRequest educationRequest) {
+        this.educationRequest = educationRequest;
+    }
+
+    public WorkInfoRequest getWorkInfoRequest() {
+        return workInfoRequest;
+    }
+
+    public void setWorkInfoRequest(WorkInfoRequest workInfoRequest) {
+        this.workInfoRequest = workInfoRequest;
+    }
+
+    public ProjectExpRequest getProjectExpRequest() {
+        return projectExpRequest;
+    }
+
+    public void setProjectExpRequest(ProjectExpRequest projectExpRequest) {
+        this.projectExpRequest = projectExpRequest;
+    }
+
+    public SkillBeanRequest getSkillBeanRequest() {
+        return skillBeanRequest;
+    }
+
+    public void setSkillBeanRequest(SkillBeanRequest skillBeanRequest) {
+        this.skillBeanRequest = skillBeanRequest;
+    }
+
+    public HonorBenaRequest getHonorBenaRequest() {
+        return honorBenaRequest;
+    }
+
+    public void setHonorBenaRequest(HonorBenaRequest honorBenaRequest) {
+        this.honorBenaRequest = honorBenaRequest;
+    }
+
+    public CertificateRequest getCertificateRequest() {
+        return certificateRequest;
+    }
+
+    public void setCertificateRequest(CertificateRequest certificateRequest) {
+        this.certificateRequest = certificateRequest;
+    }*/
+}

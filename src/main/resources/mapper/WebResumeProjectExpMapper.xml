@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebResumeProjectExpMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebResumeProjectExp">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="rid" jdbcType="VARCHAR" property="rid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+    <result column="begin_time" jdbcType="DATE" property="beginTime" />
+    <result column="end_time" jdbcType="DATE" property="endTime" />
+    <result column="rank" jdbcType="INTEGER" property="rank" />
+    <result column="industry_id" jdbcType="INTEGER" property="industryId" />
+    <result column="industry_name" jdbcType="VARCHAR" property="industryName" />
+    <result column="tpl_id" jdbcType="INTEGER" property="tplId" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+</mapper>

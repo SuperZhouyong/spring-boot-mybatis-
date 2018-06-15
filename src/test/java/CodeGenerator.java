@@ -22,7 +22,7 @@ public class CodeGenerator {
     private static final String JDBC_USERNAME = "root";
     private static final String JDBC_PASSWORD = "123456";*/
     private static final String JDBC_URL = "jdbc:mysql://192.168.0.66:3306/sqtresumed?useUnicode=true&characterEncoding=utf-8&useSSL=false";
-//    private static final String JDBC_URL = "jdbc:mysql://192.168.0.66:3306/sqtcom?useUnicode=true&characterEncoding=utf-8&useSSL=false";
+//        private static final String JDBC_URL = "jdbc:mysql://192.168.0.66:3306/sqtcom?useUnicode=true&characterEncoding=utf-8&useSSL=false";
     private static final String JDBC_USERNAME = "web";
     private static final String JDBC_PASSWORD = "sa";
     private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
@@ -47,7 +47,8 @@ public class CodeGenerator {
 //            genCode("sys_job_industry_tpl","sys_job_tpl");
 //        genCode("web_electronic_resume");
 //        genCode("web_tpl_visit_num");
-    genCode("web_tpl_lowest_year");
+        //"da_i_tpl","sys_proflib_function","sys_job_tpl",
+        genCode("web_flow_atonce_salary");
     }
 
     /**
@@ -107,7 +108,16 @@ public class CodeGenerator {
 
         JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
         javaClientGeneratorConfiguration.setTargetProject(PROJECT_PATH + JAVA_PATH);
+//        javaClientGeneratorConfiguration.setTargetPackage(MAPPER_PACKAGE);
         javaClientGeneratorConfiguration.setTargetPackage(MAPPER_PACKAGE);
+
+        // 这是默认第一个
+        if (JDBC_URL.contains("sqtresumed"))
+            javaClientGeneratorConfiguration.setTargetPackage(MAPPER_PACKAGE);
+        if (JDBC_URL.contains("sqtcom"))
+            javaClientGeneratorConfiguration.setTargetPackage(MAPPER_PACKAGE_TWO);
+        if (JDBC_URL.contains("sqtdata"))
+            javaClientGeneratorConfiguration.setTargetPackage(MAPPER_PACKAGE_THREE);
         javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
         context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
@@ -166,8 +176,15 @@ public class CodeGenerator {
             if (!file1.getParentFile().exists()) {
                 file1.getParentFile().mkdirs();
             }
-            cfg.getTemplate("service-impl.ftl").process(data,
-                    new FileWriter(file1));
+//            cfg.getTemplate("service-impl.ftl").process(data, new FileWriter(file1));
+            if (JDBC_URL.contains("sqtresumed"))
+                cfg.getTemplate("service-impl.ftl").process(data, new FileWriter(file1));
+            if (JDBC_URL.contains("sqtcom"))
+                cfg.getTemplate("service-impltwo.ftl").process(data, new FileWriter(file1));
+           /* if (JDBC_URL.contains("sqtdata"))
+                javaClientGeneratorConfiguration.setTargetPackage(MAPPER_PACKAGE_THREE);*/
+          /*  cfg.getTemplate("service-impl.ftl").process(data,
+                    new FileWriter(file1));*/
             System.out.println(modelNameUpperCamel + "ServiceImpl.java 生成成功");
         } catch (Exception e) {
             throw new RuntimeException("生成Service失败", e);

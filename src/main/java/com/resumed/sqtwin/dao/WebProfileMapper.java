@@ -1,9 +1,0 @@
-package com.resumed.sqtwin.dao;
-
-import com.resumed.sqtwin.core.Mapper;
-import com.resumed.sqtwin.model.WebProfile;
-
-public interface WebProfileMapper extends Mapper<WebProfile> {
-
-
-}

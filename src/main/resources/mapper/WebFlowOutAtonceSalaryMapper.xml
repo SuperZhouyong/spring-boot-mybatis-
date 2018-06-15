@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebFlowOutAtonceSalaryMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebFlowOutAtonceSalary">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cityId" jdbcType="INTEGER" property="cityid" />
+    <result column="tplLevel" jdbcType="INTEGER" property="tpllevel" />
+    <result column="workDate" jdbcType="INTEGER" property="workdate" />
+    <result column="salary" jdbcType="INTEGER" property="salary" />
+  </resultMap>
+</mapper>

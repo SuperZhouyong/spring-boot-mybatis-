@@ -1,0 +1,610 @@
+package com.resumed.sqtwin.web;
+
+import com.resumed.sqtwin.configurer.DS;
+import com.resumed.sqtwin.configurer.DataSourceContextHolder;
+import com.resumed.sqtwin.core.Result;
+import com.resumed.sqtwin.core.ResultGenerator;
+import com.resumed.sqtwin.model.*;
+import com.resumed.sqtwin.model.requestbean.UpdateResume;
+import com.resumed.sqtwin.model.responseban.*;
+import com.resumed.sqtwin.service.*;
+import com.resumed.sqtwin.utils.AppConstant;
+import com.resumed.sqtwin.utils.DataUtil;
+import com.resumed.sqtwin.utils.FtpUpdateUtil;
+import com.resumed.sqtwin.utils.ImageUtil;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import tk.mybatis.mapper.entity.Condition;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @auther Super
+ * @data 2018/4/16 0016
+ * @time 下午 19:19
+ */
+@RestController
+@RequestMapping("/resume/alter")
+public class AppConstanController {
+    @Value("${img.location}")
+    private String location;
+    //个人信息
+    @Resource
+    private WebProfileService webProfileService;
+    // 教育状态
+    @Resource
+    private WebResumeEducationService webResumeEducationService;
+    //公司
+    @Resource
+    private WebResumeWorkExpService webResumeWorkExpService;
+    //项目
+    @Resource
+    private WebResumeProjectExpService webResumeProjectExpService;
+    //荣誉
+    @Resource
+    private WebResumeHonorService webResumeHonorService;
+    //技能
+    @Resource
+    private WebResumeSkillService webResumeSkillService;
+    //证书
+    @Resource
+    private WebResumeCertificateService webResumeCertificateService;
+    //个人描述自述
+    @Resource
+    private WebResumeEvalService webResumeEvalService;
+    //rid的库
+    @Resource
+    private WebRidService webRidService;
+    //保存多份数据库
+    @Resource
+    private WebResumeService webResumeService;
+
+    // 专业
+    @Resource
+    private WebMajorService webMajorService;
+    // 过期专业
+    @Resource
+    private WebMajorExService webMajorExService;
+    // 用户细节 用来处理图片
+    @Resource
+    private WebUserDetailService webUserDetailService;
+
+    //1新建 9历史  8诊断 99删除
+    private final Logger logger = LoggerFactory.getLogger(AppConstanController.class);
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/resumesaveas")
+    public Result getSaveAs(@RequestParam Integer gid, @RequestParam String rid, @RequestParam String reTitle) {
+
+
+        return ResultGenerator.genFailResult("");
+    }
+
+
+    /**
+     * @param gid
+     * @return 简历列表
+     */
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/resumeList")
+    public Result getResumeList(@RequestParam(defaultValue = "0") Integer gid) {
+        if (gid == 0) {
+            return ResultGenerator.genFailResult("登陆");
+        }
+        Condition condition = new Condition(WebResume.class);
+        condition.createCriteria().andCondition("gid = '" + gid + "' and status =  1");
+        // 降序
+        condition.setOrderByClause("createTime desc ");
+        List<WebResume> byCondition = webResumeService.findByCondition(condition);
+        ResultList resultList = new ResultList();
+        ArrayList<resumeListResponse> resumeListBeans = new ArrayList<>();
+        for (WebResume webResume : byCondition) {
+            resumeListBeans.add(new resumeListResponse(webResume.getRid(), webResume.getResumeTitle(), DataUtil.getTimestampParsetoString(webResume.getCreatetime())));
+        }
+        return ResultGenerator.genSuccessResult(resultList.setmList(resumeListBeans));
+    }
+
+
+    @DS(DataSourceContextHolder.Two)
+    @PostMapping("/checkMajorId")
+    public Result checkMajorId(@RequestParam String majorName, @RequestParam Integer degree) {
+        Condition condition = new Condition(WebMajor.class);
+        condition.createCriteria().andCondition("name = '" + majorName + "' and " + "degree = " + degree);
+        List<WebMajor> byCondition = webMajorService.findByCondition(condition);
+        if (byCondition == null || byCondition.size() == 0) {
+            Condition conditionEx = new Condition(WebMajorEx.class);
+            conditionEx.createCriteria().andCondition("name = '" + majorName + "' and " + "degree = " + degree);
+            List<WebMajorEx> byConditionEx = webMajorExService.findByCondition(conditionEx);
+            if (byConditionEx == null || byConditionEx.size() == 0) {
+                // 传-1；
+                return ResultGenerator.genSuccessResult(new ResultList().setmList(-1));
+            } else {
+                return ResultGenerator.genSuccessResult(new ResultList().setmList(byConditionEx.get(0).getId()));
+
+            }
+        }
+        {
+            return ResultGenerator.genSuccessResult(new ResultList().setmList(byCondition.get(0).getMajorid()));
+        }
+
+
+    }
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/updateImage")
+    public Result updateImage(@RequestParam("iconImage") MultipartFile multipartFile, @RequestParam String gid, @RequestParam(required = false) String rid) {
+        return UpdateImage(multipartFile, gid, rid);
+
+
+    }
+
+    private Result UpdateImage(@RequestParam("iconImage") MultipartFile multipartFile, @RequestParam String gid, @RequestParam(required = false) String rid) {
+        if (multipartFile.isEmpty() || StringUtils.isBlank(multipartFile.getOriginalFilename()) || StringUtils.isBlank(gid))
+            return ResultGenerator.genFailResult("请检车上传文件的格式");
+        String contentType = multipartFile.getContentType();
+        if (!contentType.contains("")) {
+            return ResultGenerator.genFailResult("文件contentType错误");
+        }
+        String root_fileName = multipartFile.getOriginalFilename();
+        logger.info("上传图片：name={},type={}", root_fileName, contentType);
+        //处理图片
+        String return_path = "/s";
+        String filePath = location + return_path;
+        logger.info("图片保存路径={}", filePath);
+        String file_name = null;
+//        String s = StringUtils.isBlank(gid)?"":gid.trim() ;
+
+        String Dictiry = "zd" + (StringUtils.isBlank(gid) ? "" : gid.trim()) + (StringUtils.isBlank(rid) ? "" : rid.trim());
+        String newFileName = System.currentTimeMillis() + (StringUtils.isBlank(gid) ? "" : gid.trim()) + (StringUtils.isBlank(rid) ? "" : rid.trim());
+        try {
+
+            file_name = ImageUtil.saveImg(multipartFile, filePath, newFileName);
+
+            logger.info("返回值：{}", file_name);
+
+            boolean isUpdate = FtpUpdateUtil.uploadFile(newFileName, multipartFile.getInputStream(), Dictiry);
+
+            String newFileHttpName = "http://" + AppConstant.FTP_ADDRESS + "/" + Dictiry + "/" + newFileName;
+
+            if (isUpdate) {
+                iconImageResponse iconImageResponse = new iconImageResponse();
+                iconImageResponse.setIcon_image(newFileHttpName);
+
+                webUserDetailService.UpdateIconImage(gid, newFileHttpName, new Date());
+
+
+                return ResultGenerator.genSuccessResult(iconImageResponse);
+            } else
+                return ResultGenerator.genFailResult("上传失败");
+
+
+        } catch (IOException e) {
+            return ResultGenerator.genFailResult("上传失败");
+        }
+    }
+
+    /**
+     * @param updateResume
+     * @return 保存Id
+     * @throws ParseException
+     */
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/saveResume")
+    public Result SoveResume(@RequestBody UpdateResume updateResume, @RequestParam("iconImage") MultipartFile multipartFile) throws ParseException {
+        if (updateResume == null || updateResume.getWebProfile() == null || updateResume.getWebResumeEducation() == null || updateResume.getWebResumeWorkExp() == null || updateResume.getWebResumeProjectExp() == null
+                || updateResume.getWebResumeHonor() == null || updateResume.getWebResumeCertificate() == null || updateResume.getWebResumeSkill() == null)
+            return ResultGenerator.genFailResult("请输入未完成的信息");
+        if (updateResume.getWebResumeEducation().size() == 0 || updateResume.getWebResumeWorkExp().size() == 0 || updateResume.getWebResumeProjectExp().size() == 0 || updateResume.getWebResumeHonor().size() == 0
+                || updateResume.getWebResumeCertificate().size() == 0 || updateResume.getWebResumeSkill().size() == 0)
+            return ResultGenerator.genFailResult("请输入未完成的信息");
+        UpdaeResumeResponse updaeResumeResponse = new UpdaeResumeResponse();
+        int gid = updateResume.getGid();
+        String rid = updateResume.getRid();
+
+
+        // 这是新增
+        if (StringUtils.isEmpty(rid)) {
+            // 同步保存第一次
+            rid = SaveResumeData(updateResume, gid);
+
+            WebResume webResume = new WebResume();
+            webResume.setGid(gid);
+            webResume.setRid(rid);
+            webResume.setCreatetime(new Date());
+            webResume.setUpdatetime(new Date());
+            webResume.setResumeTitle(updateResume.getResumeTitle());
+            webResume.setStatus(1);
+
+            webResumeService.save(webResume);
+            updaeResumeResponse.setRid(rid);
+
+            WebResume webResumeNine = new WebResume();
+            webResumeNine.setPrid(rid);
+            rid = SaveResumeData(updateResume, gid);
+            webResumeNine.setGid(gid);
+            webResumeNine.setRid(rid);
+            webResumeNine.setCreatetime(new Date());
+            webResumeNine.setUpdatetime(new Date());
+            webResumeNine.setResumeTitle(updateResume.getResumeTitle());
+            webResumeNine.setStatus(9);
+            webResumeService.save(webResumeNine);
+
+        } else {
+            UpdateResumeData(updateResume, rid, gid);
+            updaeResumeResponse.setRid(rid);
+            WebResume webResumeNine = new WebResume();
+            webResumeNine.setPrid(rid);
+            rid = SaveResumeData(updateResume, gid);
+            webResumeNine.setGid(gid);
+            webResumeNine.setRid(rid);
+            webResumeNine.setCreatetime(new Date());
+            webResumeNine.setUpdatetime(new Date());
+            webResumeNine.setResumeTitle(updateResume.getResumeTitle());
+            webResumeNine.setStatus(9);
+
+            webResumeService.save(webResumeNine);
+        }
+        String icon_image;
+        if (multipartFile != null) {
+            if (!(multipartFile.isEmpty() || StringUtils.isBlank(multipartFile.getOriginalFilename()) || StringUtils.isBlank(String.valueOf(gid)))) {
+
+                Result result = UpdateImage(multipartFile, String.valueOf(gid), rid);
+                if (result.getCode() == 200) {
+                    icon_image = ((iconImageResponse) result.getData()).getIcon_image();
+                    Condition condition = new Condition(WebProfile.class);
+                    if (!StringUtils.isEmpty(rid)) {
+                        condition.createCriteria().andCondition("rid = '" + rid + "' gid = " + gid);
+                        WebProfile webProfile = new WebProfile();
+                        webProfile.setAvatarUrl(icon_image);
+                        webProfile.setAvatarStatus((byte) 0);
+                        webProfileService.UpdateByConditionSelective(webProfile, condition);
+                    }
+
+                }
+            }
+
+
+        }
+
+
+        return ResultGenerator.genSuccessResult(updaeResumeResponse);
+    }
+
+    private void UpdateResumeData(UpdateResume updateResume, String rid, int gid) {
+        // 个人信息
+        Condition conditionProfile = new Condition(WebProfile.class);
+        conditionProfile.createCriteria().andCondition("rid = '" + rid + "'");
+        if (!StringUtils.isEmpty(updateResume.getWebProfile().getBirthdata())) {
+            try {
+                updateResume.getWebProfile().setBirthday(DataUtil.dfDate.get().parse(updateResume.getWebProfile().getBirthdata()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        webProfileService.UpdateByConditionSelective(updateResume.getWebProfile(), conditionProfile);
+        //教育证明
+        Condition conditionEducation = new Condition(WebResumeEducation.class);
+        conditionEducation.createCriteria().andCondition("rid = '" + rid + "'");
+//        webResumeEducationService.UpdateByConditionSelective(updateResume.getWebResumeEducation(), conditionEducation);
+        webResumeEducationService.deleteByCondition(conditionEducation);
+
+
+        // 工作经验
+        Condition conditionWorkExp = new Condition(WebResumeWorkExp.class);
+        conditionWorkExp.createCriteria().andCondition("rid = '" + rid + "'");
+//        webResumeWorkExpService.UpdateByConditionSelective(updateResume.getWebResumeWorkExp(), conditionWorkExp);
+        webResumeWorkExpService.deleteByCondition(conditionWorkExp);
+
+        //项目
+        //项目
+        Condition conditionProject = new Condition(WebResumeProjectExp.class);
+        conditionProject.createCriteria().andCondition("rid = '" + rid + "'");
+        webResumeProjectExpService.deleteByCondition(conditionProject);
+        // 荣誉
+        Condition conditionHonor = new Condition(WebResumeHonor.class);
+        conditionHonor.createCriteria().andCondition("rid = '" + rid + "'");
+        webResumeHonorService.deleteByCondition(conditionHonor);
+        //技能
+        Condition conditionSkill = new Condition(WebResumeSkill.class);
+        conditionSkill.createCriteria().andCondition("rid = '" + rid + "'");
+        webResumeSkillService.deleteByCondition(conditionSkill);
+        // 证书
+        Condition conditionCer = new Condition(WebResumeCertificate.class);
+        conditionCer.createCriteria().andCondition("rid = '" + rid + "'");
+        webResumeCertificateService.deleteByCondition(conditionCer);
+        // 自述
+        Condition conditionEval = new Condition(WebResumeEval.class);
+        conditionEval.createCriteria().andCondition("rid = '" + rid + "'");
+        WebResumeEval webResumeEval = new WebResumeEval();
+        webResumeEval.setContent(updateResume.getWebProfile().getDescribe());
+
+        ForChildSave(updateResume, gid, rid);
+
+        webResumeEvalService.UpdateByConditionSelective(webResumeEval, conditionEval);
+    }
+
+    private String SaveResumeData(UpdateResume updateResume, int gid) {
+        String rid;
+        rid = "RD" + RandomUtils.nextInt(1000000, 9999999) + System.currentTimeMillis();
+          /*  RD+ 1000000到9999999的随机数+时间戳
+            插入并查询web_rid表，若不存在，则插入，否则重新生成一次再次查询*/
+        WebRid mWebRid = webRidService.findBy("rid", rid);
+
+        while (mWebRid != null) {
+            rid = "RD" + RandomUtils.nextInt(1000000, 9999999) + System.currentTimeMillis();
+            mWebRid = webRidService.findBy("rid", rid);
+
+        }
+
+        mWebRid = new WebRid();
+        mWebRid.setRid(rid);
+        webRidService.save(mWebRid);
+        updateResume.getWebProfile().setId(null);
+        try {
+            if (!StringUtils.isEmpty(updateResume.getWebProfile().getBirthdata()))
+                updateResume.getWebProfile().setBirthday(DataUtil.dfDate.get().parse(updateResume.getWebProfile().getBirthdata()));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        updateResume.getWebProfile().setGid(gid);
+        updateResume.getWebProfile().setRid(rid);
+        webProfileService.save(updateResume.getWebProfile());
+
+        ForChildSave(updateResume, gid, rid);
+
+        WebResumeEval webResumeEval = new WebResumeEval();
+        webResumeEval.setGid(gid);
+        webResumeEval.setRid(rid);
+        webResumeEval.setContent(updateResume.getWebProfile().getDescribe());
+        webResumeEvalService.save(webResumeEval);
+        return rid;
+    }
+
+    private void ForChildSave(UpdateResume updateResume, int gid, String rid) {
+        for (WebResumeEducation webResumeEducation : updateResume.getWebResumeEducation()) {
+            webResumeEducation.setGid(gid);
+            webResumeEducation.setRid(rid);
+            // 学历Id
+            Byte degree = webResumeEducation.getDegree();
+            String majorName = webResumeEducation.getMajorName();
+
+
+            try {
+                if (!StringUtils.isEmpty(webResumeEducation.getEndTimeDay()))
+                    webResumeEducation.setEndTime(DataUtil.dfDate.get().parse(webResumeEducation.getEndTimeDay()));
+                if (!StringUtils.isEmpty(webResumeEducation.getStartTimeDay()))
+                    webResumeEducation.setStartTime(DataUtil.dfDate.get().parse(webResumeEducation.getStartTimeDay()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        webResumeEducationService.save(updateResume.getWebResumeEducation());
+
+
+        for (WebResumeWorkExp webResumeWorkExp : updateResume.getWebResumeWorkExp()) {
+            webResumeWorkExp.setGid(gid);
+            webResumeWorkExp.setRid(rid);
+
+            try {
+                if (!StringUtils.isEmpty(webResumeWorkExp.getEndTimeDay())) {
+                    webResumeWorkExp.setEndTime(DataUtil.dfDate.get().parse(webResumeWorkExp.getEndTimeDay()));
+                }
+                if (!StringUtils.isEmpty(webResumeWorkExp.getStartTimeDay()))
+                    webResumeWorkExp.setStartTime(DataUtil.dfDate.get().parse(webResumeWorkExp.getStartTimeDay()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+        webResumeWorkExpService.save(updateResume.getWebResumeWorkExp());
+
+
+        for (WebResumeProjectExp webResumeProjectExp : updateResume.getWebResumeProjectExp()) {
+            webResumeProjectExp.setGid(gid);
+            webResumeProjectExp.setRid(rid);
+            try {
+                if (!StringUtils.isEmpty(webResumeProjectExp.getEndTimeDay())) {
+                    webResumeProjectExp.setEndTime(DataUtil.dfDate.get().parse(webResumeProjectExp.getEndTimeDay()));
+                }
+                if (!StringUtils.isEmpty(webResumeProjectExp.getBeginTimeDay())) {
+                    webResumeProjectExp.setBeginTime(DataUtil.dfDate.get().parse(webResumeProjectExp.getBeginTimeDay()));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        webResumeProjectExpService.save(updateResume.getWebResumeProjectExp());
+
+
+        for (WebResumeSkill webResumeSkill : updateResume.getWebResumeSkill()) {
+            webResumeSkill.setGid(gid);
+            webResumeSkill.setRid(rid);
+        }
+        webResumeSkillService.save(updateResume.getWebResumeSkill());
+
+
+        for (WebResumeHonor webResumeHonor : updateResume.getWebResumeHonor()) {
+            webResumeHonor.setGid(gid);
+            webResumeHonor.setRid(rid);
+            if (!StringUtils.isEmpty(webResumeHonor.getHonorTimeDay())) {
+                try {
+                    webResumeHonor.setHonorTime(DataUtil.dfDate.get().parse(webResumeHonor.getHonorTimeDay()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        webResumeHonorService.save(updateResume.getWebResumeHonor());
+
+        for (WebResumeCertificate webResumeCertificate : updateResume.getWebResumeCertificate()) {
+            webResumeCertificate.setGid(gid);
+            webResumeCertificate.setRid(rid);
+            if (!StringUtils.isEmpty(webResumeCertificate.getGettimeDay())) {
+                try {
+                    webResumeCertificate.setGettime(DataUtil.dfDate.get().parse(webResumeCertificate.getGettimeDay()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        webResumeCertificateService.save(updateResume.getWebResumeCertificate());
+    }
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/Demo")
+    public Result ceshi(@RequestParam String gid, @RequestParam String rid) {
+        Condition conditionEducation = new Condition(WebResumeEducation.class);
+        conditionEducation.createCriteria().andCondition("gid = '" + gid + "' and  rid =  '" + rid + "'");
+        WebResumeEducation webResumeEducation = new WebResumeEducation();
+        try {
+            webResumeEducation.setStartTime(DataUtil.dfDate.get().parse("2007-08-10"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+//        webResumeEducation.setStartTime(new Date());
+        webResumeEducation.setEndTime(new Date());
+        webResumeEducationService.UpdateByConditionSelective(webResumeEducation, conditionEducation);
+//        WebResumeEducation webResumeEducation1 = webResumeEducationService.findByCondition(conditionEducation).get(0);
+//        webResumeEducation.
+        List<WebResumeEducation> byCondition = webResumeEducationService.findByCondition(conditionEducation);
+//        Result result = ResultGenerator.genSuccessResult(byCondition);
+
+        return ResultGenerator.genSuccessResult(byCondition);
+    }
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/resumeTitle")
+    public Result updateTitle(@RequestParam String gid, @RequestParam String rid, @RequestParam String reTitle) {
+        WebResume webResume = new WebResume();
+        webResume.setResumeTitle(reTitle);
+        Condition condition = new Condition(WebResume.class);
+        condition.createCriteria().andCondition("gid = '" + gid + "' and  rid = '" + rid + "'");
+        webResumeService.UpdateByConditionSelective(webResume, condition);
+        return ResultGenerator.genSuccessResult();
+    }
+
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/getresumendata")
+    public Result getResumeData(@RequestParam String gid, @RequestParam String rid) {
+        if (StringUtils.isEmpty(gid) || StringUtils.isEmpty(rid))
+            return ResultGenerator.genFailResult("参数错误");
+        resumeResponse resumeResponse = getResumeResponse(gid, rid);
+
+
+        return ResultGenerator.genSuccessResult(resumeResponse);
+    }
+
+    public resumeResponse getResumeResponse(@RequestParam String gid, @RequestParam String rid) {
+        resumeResponse resumeResponse = new resumeResponse();
+        ArrayList<com.resumed.sqtwin.model.responseban.resumeResponse.ItemBean> itemBeans = new ArrayList<>();
+        resumeResponse.setmResume(itemBeans);
+
+
+        // 自述
+        Condition conditionEval = new Condition(WebResumeEval.class);
+        conditionEval.createCriteria().andCondition("gid = '" + gid + "' and  rid =  '" + rid + "'");
+        List<WebResumeEval> byConditionEval = webResumeEvalService.findByCondition(conditionEval);
+
+
+        Condition condition = new Condition(WebProfile.class);
+        condition.createCriteria().andCondition("gid = '" + gid + "' and  rid =  '" + rid + "'");
+        // 查询个人信息
+        List<WebProfile> byConditionProfile = webProfileService.findByCondition(condition);
+        byConditionProfile.get(0).setDescribe(byConditionEval.get(0).getContent() + "");
+        com.resumed.sqtwin.model.responseban.resumeResponse.ItemBean itemBeanProfile = new resumeResponse.ItemBean();
+        itemBeanProfile.setmList(byConditionProfile);
+        itemBeanProfile.setTypeName("个人信息");
+        itemBeanProfile.setTypeNum("1");
+        itemBeans.add(itemBeanProfile);
+
+
+        //教育证明
+        Condition conditionEducation = new Condition(WebResumeEducation.class);
+        conditionEducation.createCriteria().andCondition("gid = '" + gid + "' and  rid =  '" + rid + "'");
+//        webResumeEducationService.UpdateByConditionSelective(updateResume.getWebResumeEducation(), conditionEducation);
+        List<WebResumeEducation> byConditionEducation = webResumeEducationService.findByCondition(conditionEducation);
+
+        com.resumed.sqtwin.model.responseban.resumeResponse.ItemBean itemBeanEducation = new resumeResponse.ItemBean();
+        itemBeanEducation.setmList(byConditionEducation);
+        itemBeanEducation.setTypeName("教育经历");
+        itemBeanEducation.setTypeNum("2");
+        itemBeans.add(itemBeanEducation);
+
+
+        // 工作经验
+        Condition conditionWorkExp = new Condition(WebResumeWorkExp.class);
+        conditionWorkExp.createCriteria().andCondition("gid = '" + gid + "' and  rid =  '" + rid + "'");
+//        webResumeWorkExpService.UpdateByConditionSelective(updateResume.getWebResumeWorkExp(), conditionWorkExp);
+        List<WebResumeWorkExp> byConditionWorkexp = webResumeWorkExpService.findByCondition(conditionWorkExp);
+
+        com.resumed.sqtwin.model.responseban.resumeResponse.ItemBean itemBeanWorkExp = new resumeResponse.ItemBean();
+        itemBeanWorkExp.setmList(byConditionWorkexp);
+        itemBeanWorkExp.setTypeName("工作经历");
+        itemBeanWorkExp.setTypeNum("3");
+        itemBeans.add(itemBeanWorkExp);
+
+
+        //项目
+        Condition conditionProject = new Condition(WebResumeProjectExp.class);
+        conditionProject.createCriteria().andCondition("gid = '" + gid + "' and  rid =  '" + rid + "'");
+        List<WebResumeProjectExp> byConditionProject = webResumeProjectExpService.findByCondition(conditionProject);
+
+        com.resumed.sqtwin.model.responseban.resumeResponse.ItemBean itemBeanProject = new resumeResponse.ItemBean();
+        itemBeanProject.setmList(byConditionProject);
+        itemBeanProject.setTypeName("项目经验");
+        itemBeanProject.setTypeNum("4");
+        itemBeans.add(itemBeanProject);
+
+
+        //技能
+        Condition conditionSkill = new Condition(WebResumeSkill.class);
+        conditionSkill.createCriteria().andCondition("gid = '" + gid + "' and  rid =  '" + rid + "'");
+        List<WebResumeSkill> byConditionSkill = webResumeSkillService.findByCondition(conditionSkill);
+
+        com.resumed.sqtwin.model.responseban.resumeResponse.ItemBean itemBeanSkill = new resumeResponse.ItemBean();
+        itemBeanSkill.setmList(byConditionSkill);
+        itemBeanSkill.setTypeName("擅长技能");
+        itemBeanSkill.setTypeNum("5");
+        itemBeans.add(itemBeanSkill);
+
+
+        // 荣誉
+        Condition conditionHonor = new Condition(WebResumeHonor.class);
+        conditionHonor.createCriteria().andCondition("gid = '" + gid + "' and  rid =  '" + rid + "'");
+        List<WebResumeHonor> byConditionHonor = webResumeHonorService.findByCondition(conditionHonor);
+
+        com.resumed.sqtwin.model.responseban.resumeResponse.ItemBean itemBeanHonor = new resumeResponse.ItemBean();
+        itemBeanHonor.setmList(byConditionHonor);
+        itemBeanHonor.setTypeName("荣誉");
+        itemBeanHonor.setTypeNum("6");
+        itemBeans.add(itemBeanHonor);
+
+        // 证书
+        Condition conditionCer = new Condition(WebResumeCertificate.class);
+        conditionCer.createCriteria().andCondition("gid = '" + gid + "' and  rid =  '" + rid + "'");
+        List<WebResumeCertificate> byConditionCer = webResumeCertificateService.findByCondition(conditionCer);
+
+        com.resumed.sqtwin.model.responseban.resumeResponse.ItemBean itemBeanCer = new resumeResponse.ItemBean();
+        itemBeanCer.setmList(byConditionCer);
+        itemBeanCer.setTypeName("证书");
+        itemBeanCer.setTypeNum("7");
+        itemBeans.add(itemBeanCer);
+        return resumeResponse;
+    }
+
+
+}

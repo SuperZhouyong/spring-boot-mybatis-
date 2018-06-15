@@ -1,0 +1,19 @@
+spring.profiles.active=dev
+
+
+img.location = F:/blog/file
+spring.resources.static-locations=file:${img.location}}
+spring.mvc.static-path-pattern=/**
+
+server.port=9090
+server.tomcat.uri-encoding=UTF-8
+
+# 所有环境通用的配置，放在这里
+spring.session.store-type=redis
+#server.context-path = /springboot-log
+spring.redis.host=192.168.0.66
+spring.redis.port=6379
+logging.config=classpath:logback-boot.xml
+# 404 交给异常处理器处理
+spring.mvc.throw-exception-if-no-handler-found=true
+spring.resources.add-mappings=false

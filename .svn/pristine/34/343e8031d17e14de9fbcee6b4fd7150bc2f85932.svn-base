@@ -1,0 +1,42 @@
+package com.resumed.sqtwin.model.responseban;
+
+import java.util.List;
+
+/**
+ * @auther Super
+ * @data 2018/4/25 0025
+ * @time 上午 11:37
+ */
+public class SkillInfo {
+    // 技能名称
+    private List<String> skillName ;
+
+    // 综合
+    private List<String> allDesc ;
+    //熟练度
+    private List<String> skillDegree ;
+
+    public List<String> getSkillName() {
+        return skillName;
+    }
+
+    public void setSkillName(List<String> skillName) {
+        this.skillName = skillName;
+    }
+
+    public List<String> getAllDesc() {
+        return allDesc;
+    }
+
+    public void setAllDesc(List<String> allDesc) {
+        this.allDesc = allDesc;
+    }
+
+    public List<String> getSkillDegree() {
+        return skillDegree;
+    }
+
+    public void setSkillDegree(List<String> skillDegree) {
+        this.skillDegree = skillDegree;
+    }
+}

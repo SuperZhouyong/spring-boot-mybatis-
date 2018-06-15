@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebTplVisitNumMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebTplVisitNum">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="host" jdbcType="VARCHAR" property="host" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="tplId" jdbcType="INTEGER" property="tplid" />
+    <result column="num" jdbcType="TINYINT" property="num" />
+    <result column="at" jdbcType="TIMESTAMP" property="at" />
+  </resultMap>
+</mapper>

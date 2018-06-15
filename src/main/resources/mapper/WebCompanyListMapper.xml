@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mappertwo.WebCompanyListMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebCompanyList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="companyId" jdbcType="INTEGER" property="companyid" />
+    <result column="cn_name" jdbcType="VARCHAR" property="cnName" />
+    <result column="en_name" jdbcType="VARCHAR" property="enName" />
+    <result column="full_en_name" jdbcType="VARCHAR" property="fullEnName" />
+    <result column="full_cn_name" jdbcType="VARCHAR" property="fullCnName" />
+    <result column="is_world_top" jdbcType="TINYINT" property="isWorldTop" />
+    <result column="is_china_top" jdbcType="TINYINT" property="isChinaTop" />
+    <result column="is_on_china_top" jdbcType="TINYINT" property="isOnChinaTop" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+</mapper>

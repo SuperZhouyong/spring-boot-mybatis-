@@ -7,6 +7,7 @@ import tk.mybatis.mapper.entity.Condition;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,9 +65,12 @@ public abstract class AbstractService<T> implements Service<T> {
         }
     }
 
-    public List<T> findByIds(String ids) {
+  /*  public List<T> findByIds(String ids) {
         return mapper.selectByIds(ids);
-    }
+    }*/
+  public List<T> findByIds(String ids) {
+      return new ArrayList<>();
+  }
 
     public List<T> findByCondition(Condition condition) {
         return mapper.selectByCondition(condition);

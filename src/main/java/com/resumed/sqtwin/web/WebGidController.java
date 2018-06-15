@@ -48,6 +48,12 @@ public class WebGidController {
         return ResultGenerator.genSuccessResult(webGidService.queryList(webGid.getGid()));
     }
 
+   /* @GetMapping("/addSovetwo")
+    public Result queryListTwo(Integer gid) {
+
+        return ResultGenerator.genSuccessResult(webGidService.InsertWebGid(n));
+    }*/
+
 
 
 }

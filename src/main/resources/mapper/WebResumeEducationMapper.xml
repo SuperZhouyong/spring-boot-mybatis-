@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebResumeEducationMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebResumeEducation">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="rid" jdbcType="VARCHAR" property="rid" />
+    <result column="school_name" jdbcType="VARCHAR" property="schoolName" />
+    <result column="school_id" jdbcType="INTEGER" property="schoolId" />
+    <result column="degree" jdbcType="TINYINT" property="degree" />
+    <result column="major_id" jdbcType="INTEGER" property="majorId" />
+    <result column="major_name" jdbcType="VARCHAR" property="majorName" />
+    <result column="start_time" jdbcType="DATE" property="startTime" />
+    <result column="end_time" jdbcType="DATE" property="endTime" />
+    <result column="rank" jdbcType="INTEGER" property="rank" />
+  </resultMap>
+</mapper>

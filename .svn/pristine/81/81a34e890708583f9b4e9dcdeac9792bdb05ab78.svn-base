@@ -1,0 +1,29 @@
+spring.profiles.active=prod
+img.location=/usr/local/rdoctorapi
+cbs.imagesPath=F:/blog/file
+#spring.resources.static-locations=file:${img.location}}
+#spring.mvc.static-path-pattern=/**
+spring.mvc.static-path-pattern=/image/**
+spring.resources.static-locations=classpath:/image/
+server.port=9090
+server.tomcat.uri-encoding=UTF-8
+# 所有环境通用的配置，放在这里
+spring.session.store-type=redis
+#server.context-path = /springboot-log
+spring.redis.host=192.168.0.66
+spring.redis.port=6379
+#logging.config=classpath:logback-boot-${spring.profiles.active}.xml
+#logging.path=/logs
+# 404 交给异常处理器处理
+spring.mvc.throw-exception-if-no-handler-found=true
+spring.resources.add-mappings=false
+#spring.resources.add-mappings=true
+spring.redis.host2=192.168.0.77
+#log.path = F:/blog/file/sys.log
+#system.root.path=${img.location}/log/sys.log
+#server.tomcat.basedir=${img.location}/log/tomcat_log.log
+#server.tomcat.accesslog.enabled=true
+#server.tomcat.accesslog.pattern=%t %a "%r" %s %S (%D ms)
+
+
+

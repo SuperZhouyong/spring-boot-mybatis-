@@ -1,7 +1,9 @@
 package com.resumed.sqtwin.service.impl;
 
+import com.resumed.sqtwin.configurer.DS;
+import com.resumed.sqtwin.configurer.DataSourceContextHolder;
 import com.resumed.sqtwin.core.AbstractService;
-import com.resumed.sqtwin.dao.WebGidMapper;
+import com.resumed.sqtwin.dao.mapperone.WebGidMapper;
 import com.resumed.sqtwin.model.WebGid;
 import com.resumed.sqtwin.service.WebGidService;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,12 @@ import java.util.List;
 public class WebGidServiceImpl extends AbstractService<WebGid> implements WebGidService {
     @Resource
     WebGidMapper webGidMapper ;
-
+    @DS(DataSourceContextHolder.One)
     @Override
     public List<WebGid> queryList(Integer gid) {
         return webGidMapper.queryList(gid);
     }
-
+    @DS(DataSourceContextHolder.Two)
     @Override
     public Integer InsertWebGid(WebGid webGid) {
         return webGidMapper.InsertWebGid(webGid);

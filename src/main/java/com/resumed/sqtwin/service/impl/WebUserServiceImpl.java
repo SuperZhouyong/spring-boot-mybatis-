@@ -1,6 +1,6 @@
 package com.resumed.sqtwin.service.impl;
 
-import com.resumed.sqtwin.dao.WebUserMapper;
+import com.resumed.sqtwin.dao.mapperone.WebUserMapper;
 import com.resumed.sqtwin.model.WebGid;
 import com.resumed.sqtwin.model.WebUser;
 import com.resumed.sqtwin.service.WebUserService;

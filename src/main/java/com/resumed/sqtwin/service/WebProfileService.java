@@ -1,6 +1,9 @@
 package com.resumed.sqtwin.service;
 import com.resumed.sqtwin.model.WebProfile;
 import com.resumed.sqtwin.core.Service;
+import com.resumed.sqtwin.model.WebResume;
+
+import java.util.List;
 
 
 /**
@@ -8,4 +11,6 @@ import com.resumed.sqtwin.core.Service;
  */
 public interface WebProfileService extends Service<WebProfile> {
       WebProfile InsertResume();
+
+      List<WebProfile> selectRegionalList(Integer gid);
 }

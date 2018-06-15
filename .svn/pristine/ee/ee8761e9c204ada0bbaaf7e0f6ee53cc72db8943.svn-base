@@ -1,0 +1,420 @@
+package com.resumed.sqtwin.web;
+
+import com.alibaba.fastjson.JSON;
+import com.resumed.sqtwin.configurer.DS;
+import com.resumed.sqtwin.configurer.DataSourceContextHolder;
+import com.resumed.sqtwin.configurer.RedisService;
+import com.resumed.sqtwin.core.Result;
+import com.resumed.sqtwin.core.ResultGenerator;
+import com.resumed.sqtwin.model.WebGid;
+import com.resumed.sqtwin.model.WebUser;
+import com.resumed.sqtwin.model.bean.CheckUser;
+import com.resumed.sqtwin.model.bean.SMSRetObj;
+import com.resumed.sqtwin.model.responseban.RegistResponse;
+import com.resumed.sqtwin.model.responseban.SmsResponse;
+import com.resumed.sqtwin.model.responseban.iconImageResponse;
+import com.resumed.sqtwin.model.responseban.resetPResponse;
+import com.resumed.sqtwin.service.WebUserDetailService;
+import com.resumed.sqtwin.service.WebUserService;
+import com.resumed.sqtwin.utils.*;
+import okhttp3.FormBody;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.TimeoutUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import tk.mybatis.mapper.entity.Condition;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @auther Super
+ * @data 2018/4/18 0018
+ * @time 下午 17:34
+ */
+@RestController
+@RequestMapping("/web/user")
+public class UserController {
+    @Resource
+    private WebUserService webUserService;
+
+    /*@Value("${img.location}")
+    private String location;*/
+    @Resource
+    private WebUserDetailService webUserDetailService;
+
+    @Resource
+    private RedisService mRedisService;
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+
+    //http://192.168.0.77/zd_1000019_RD19902021517814554/1517900940_1000019_RD19902021517814554.png
+   /* @DS(DataSourceContextHolder.One)
+    @PostMapping("/updateImage")
+    public Result updateImage(@RequestParam("iconImage") MultipartFile multipartFile, @RequestParam String gid, @RequestParam(required = false) String rid) {
+        return UpdateImage(multipartFile, gid, rid);
+
+
+    }
+
+    private Result UpdateImage(@RequestParam("iconImage") MultipartFile multipartFile, @RequestParam String gid, @RequestParam(required = false) String rid) {
+        if (multipartFile.isEmpty() || StringUtils.isBlank(multipartFile.getOriginalFilename()) || StringUtils.isBlank(gid))
+            return ResultGenerator.genFailResult("请检车上传文件的格式");
+        String contentType = multipartFile.getContentType();
+        if (!contentType.contains("")) {
+            return ResultGenerator.genFailResult("文件contentType错误");
+        }
+        String root_fileName = multipartFile.getOriginalFilename();
+        logger.info("上传图片：name={},type={}", root_fileName, contentType);
+        //处理图片
+        String return_path = "/s";
+        String filePath = location + return_path;
+        logger.info("图片保存路径={}", filePath);
+        String file_name = null;
+//        String s = StringUtils.isBlank(gid)?"":gid.trim() ;
+
+        String Dictiry = "zd" + (StringUtils.isBlank(gid) ? "" : gid.trim()) + (StringUtils.isBlank(rid) ? "" : rid.trim());
+        String newFileName = System.currentTimeMillis() + (StringUtils.isBlank(gid) ? "" : gid.trim()) + (StringUtils.isBlank(rid) ? "" : rid.trim());
+        try {
+
+            file_name = ImageUtil.saveImg(multipartFile, filePath, newFileName);
+
+            logger.info("返回值：{}", file_name);
+
+            boolean isUpdate = FtpUpdateUtil.uploadFile(newFileName, multipartFile.getInputStream(), Dictiry);
+
+            String newFileHttpName = "http://" + AppConstant.FTP_ADDRESS + "/" + Dictiry + "/" + newFileName;
+
+            if (isUpdate) {
+                iconImageResponse iconImageResponse = new iconImageResponse();
+                iconImageResponse.setIcon_image(newFileHttpName);
+
+                webUserDetailService.UpdateIconImage(gid, newFileHttpName, new Date());
+                return ResultGenerator.genSuccessResult(iconImageResponse);
+            } else
+                return ResultGenerator.genFailResult("上传失败");
+
+
+        } catch (IOException e) {
+            return ResultGenerator.genFailResult("上传失败");
+        }
+    }
+*/
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/smsCode")
+    public Result smsCode(@RequestParam String mPhoneNum) {
+        if (StringUtils.isEmpty(mPhoneNum))
+            return ResultGenerator.genFailResult("手机号为空");
+//        WebUser webUser = webUserService.checkPhoneNum(mPhoneNum);
+
+        Condition condition = new Condition(WebUser.class);
+        condition.createCriteria().andCondition("phone  ='" + mPhoneNum + " ' and  `status` = 1");
+        List<WebUser> byCondition = webUserService.findByCondition(condition);
+
+        if (byCondition != null && byCondition.size() != 0) {
+            return ResultGenerator.genFailResult("账号已注册");
+        } else {
+            Response mResponse = null;
+            try {
+                mResponse = ApiUtil.getApi().newCall(new Request.Builder().url(AppConstant.checkZHIYUAN).post(new FormBody.Builder().add("phone", mPhoneNum).build()).build()).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResultGenerator.genFailResult("短信发送异常，请稍后再试");
+            }
+            if (mResponse.isSuccessful()) {
+                String string = null;
+                try {
+                    string = mResponse.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return ResultGenerator.genFailResult("短信发送异常，请稍后再试");
+                }
+                CheckUser mCheckUser = JSON.parseObject(string, CheckUser.class);
+                if (mCheckUser.getStatus() == 1) {
+                    return ResultGenerator.genFailResult("账号已注册");
+                } else {
+                    SMSRetObj smsRetObj = new MessageUtil().sendByTpl(mPhoneNum);
+                    if (smsRetObj.getReturnCode() == 1) {
+                        // 验证码有效期为 300秒
+                        mRedisService.set(mPhoneNum, smsRetObj.getMsg(), TimeoutUtils.toSeconds(300, TimeUnit.SECONDS));
+                        SmsResponse smsResponse = new SmsResponse();
+                        smsResponse.setPhoneNum(mPhoneNum);
+                        smsResponse.setSmsCode(smsRetObj.getMsg());
+                        return ResultGenerator.genSuccessResult(smsResponse);
+                    } else
+                        return ResultGenerator.genFailResult("短信发送异常，请稍后再试");
+                }
+
+            } else {
+                return ResultGenerator.genFailResult("短信发送异常，请稍后再试");
+            }
+
+        }
+
+
+    }
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/regist")
+    public Result regist(@RequestParam String mPhoneNum, @RequestParam String passWord, @RequestParam String smsCode) {
+        if (StringUtils.isEmpty(mPhoneNum) || StringUtils.isEmpty(passWord) || StringUtils.isEmpty(smsCode))
+            return ResultGenerator.genFailResult("请检查输入的信息");
+        if (mRedisService.get(mPhoneNum) == null) {
+            return ResultGenerator.genFailResult("验证码过期");
+        }
+
+
+        if (mRedisService.get(mPhoneNum).equals(smsCode)) {
+            WebUser webUser = webUserService.checkPhoneNum(mPhoneNum);
+            // 没有注册
+            if (webUser == null) {
+                return getResultTryCatch(mPhoneNum, passWord);
+
+            } else {
+                //已经注册
+
+                return ResultGenerator.genFailResult("您已经是注册用户，请登录");
+            }
+
+        } else {
+            return ResultGenerator.genFailResult("验证码错误");
+        }
+
+
+    }
+
+    // 当用户没在简历医生数据库中找到的时候，查看志愿360，
+    private Result getResultTryCatch(@RequestParam String mPhoneNum, @RequestParam String passWord) {
+        WebUser webUser;
+        try {
+            Response mResponse = ApiUtil.getApi().newCall(new Request.Builder().url(AppConstant.checkZHIYUAN).post(new FormBody.Builder().add("phone", mPhoneNum).build()).build()).execute();
+            if (mResponse.isSuccessful()) {
+                String string = mResponse.body().string();
+                CheckUser mCheckUser = JSON.parseObject(string, CheckUser.class);
+                // 存在于志愿360的数据库
+                if (mCheckUser.getStatus() == 1) {
+                    WebGid webGid = new WebGid();
+                    webUserService.InsertWebGid(webGid);
+                    Integer gid = webGid.getGid();
+                    webUser = new WebUser();
+                    webUser.setGid(gid);
+                    webUser.setStatus(1);
+                    webUser.setType((byte) 2);
+                    webUser.setCreateAt(new Date());
+                    webUser.setPhone(mCheckUser.getData().getPhone());
+                    webUser.setPassword(mCheckUser.getData().getPassword());
+                    webUserService.save(webUser);
+                    RegistResponse registResponse = new RegistResponse();
+                    registResponse.setGid(String.valueOf(gid));
+                    registResponse.setPhone(mPhoneNum);
+                    registResponse.setIconImage(AppConstant.AppOffice + "/web/user/userImage");
+
+//                    return ResultGenerator.genSuccessResult(registResponse);
+                    return ResultGenerator.genFailResult("账号已注册,请直接登录");
+                } else {
+                    // 不存在360的数据库，就直接注册
+                    WebGid webGid = new WebGid();
+                    webUserService.InsertWebGid(webGid);
+                    Integer gid = webGid.getGid();
+                    webUser = new WebUser();
+                    webUser.setGid(gid);
+                    webUser.setStatus(1);
+                    webUser.setType((byte) 2);
+                    webUser.setCreateAt(new Date());
+                    webUser.setPhone(mPhoneNum);
+                    webUser.setPassword(passWord);
+                    webUserService.save(webUser);
+                    RegistResponse registResponse = new RegistResponse();
+                    registResponse.setGid(String.valueOf(gid));
+                    registResponse.setPhone(mPhoneNum);
+                    registResponse.setIconImage(AppConstant.AppOffice + "/web/user/userImage");
+                    return ResultGenerator.genSuccessResult(registResponse);
+                }
+
+            } else {
+                return ResultGenerator.genFailResult("注册失败，请稍后再试");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResultGenerator.genFailResult("注册失败，请稍后再试");
+        }
+    }
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/smslogin")
+    public Result smsLogin(@RequestParam String mPhoneNum, @RequestParam String smsCode) {
+        if (StringUtils.isEmpty(mPhoneNum) || StringUtils.isEmpty(smsCode))
+            return ResultGenerator.genFailResult("请检查输入的信息");
+        // 后面 这个参数并不需要
+//        WebUser smsLoginUser = webUserService.isSmsLoginUser(mPhoneNum, smsCode);
+
+        Condition condition = new Condition(WebUser.class);
+        condition.createCriteria().andCondition("phone = '" + mPhoneNum + "' ");
+        List<WebUser> byConditionWebUser = webUserService.findByCondition(condition);
+
+        if (byConditionWebUser == null || byConditionWebUser.size() == 0) {
+            return ResultGenerator.genFailResult("请检查输入的账号");
+        } else {
+            if (mRedisService.get(mPhoneNum) == null) {
+                return ResultGenerator.genFailResult("验证码过期");
+            }
+            if (mRedisService.get(mPhoneNum).equals(smsCode)) {
+                RegistResponse registResponse = getRegistResponse(byConditionWebUser.get(0));
+                return ResultGenerator.genSuccessResult(registResponse);
+            } else {
+                return ResultGenerator.genFailResult("验证码错误");
+            }
+
+        }
+    }
+
+    private RegistResponse getRegistResponse(WebUser smsLoginUser) {
+        RegistResponse registResponse = new RegistResponse();
+        registResponse.setGid(String.valueOf(smsLoginUser.getGid()));
+        registResponse.setPhone(smsLoginUser.getPhone());
+        registResponse.setIconImage(AppConstant.AppOffice + "/web/user/userImage");
+        return registResponse;
+    }
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/login")
+    public Result userLogin(@RequestParam String mPhoneNum, @RequestParam String passWord) {
+        if (StringUtils.isEmpty(mPhoneNum) || StringUtils.isEmpty(passWord))
+            return ResultGenerator.genFailResult("请检查输入的信息");
+        Condition condition = new Condition(WebUser.class);
+        condition.createCriteria().andCondition("phone = '" + mPhoneNum + "' and  password = '" + passWord + "'");
+        List<WebUser> byCondition = webUserService.findByCondition(condition);
+
+        if (byCondition != null && byCondition.size() != 0) {
+            RegistResponse registResponse = getRegistResponse(byCondition.get(0));
+            return ResultGenerator.genSuccessResult(registResponse);
+        } else {
+
+            try {
+                String string = null;
+                Response mResponse = ApiUtil.getApi().newCall(new Request.Builder().url(AppConstant.checkZHIYUAN).post(new FormBody.Builder().add("phone", mPhoneNum).build()).build()).execute();
+                if (mResponse.isSuccessful()) {
+                    string = mResponse.body().string();
+                    CheckUser mCheckUser = JSON.parseObject(string, CheckUser.class);
+                    if (mCheckUser.getStatus() == 1) {
+                        WebUser webUser;
+                        WebGid webGid = new WebGid();
+                        webUserService.InsertWebGid(webGid);
+                        Integer gid = webGid.getGid();
+                        webUser = new WebUser();
+                        webUser.setGid(gid);
+                        webUser.setStatus(1);
+                        webUser.setType((byte) 2);
+                        webUser.setCreateAt(new Date());
+                        webUser.setPhone(mCheckUser.getData().getPhone());
+                        webUser.setPassword(mCheckUser.getData().getPassword());
+                        webUserService.save(webUser);
+                        RegistResponse registResponse = new RegistResponse();
+                        registResponse.setGid(String.valueOf(gid));
+                        registResponse.setPhone(mPhoneNum);
+//                        registResponse.setIconImage(AppConstant.AppOffice + "/web/user/userImage");
+                        // 登陆成功
+                        return ResultGenerator.genSuccessResult(registResponse);
+//                        return ResultGenerator.genFailResult("账号已注册,请直接登录");
+                    } else {
+
+                        return ResultGenerator.genFailResult("账号密码有误");
+                    }
+                } else {
+                    return ResultGenerator.genFailResult("账号密码有误");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResultGenerator.genFailResult("账号密码有误");
+            }
+
+
+        }
+    }
+
+    @DS(DataSourceContextHolder.One)
+    @PostMapping("/resetPassword")
+    public Result resetPassword(@RequestParam String mPhoneNum, @RequestParam String oldPassWord, @RequestParam String newPassWord) {
+
+        if (StringUtils.isEmpty(mPhoneNum) || StringUtils.isEmpty(oldPassWord) || StringUtils.isEmpty(newPassWord))
+            return ResultGenerator.genFailResult("请检查输入的信息");
+
+        Condition conditionone = new Condition(WebUser.class);
+        conditionone.createCriteria().andCondition("phone = '" + mPhoneNum + "' and  password = '" + oldPassWord + "'");
+        List<WebUser> byCondition = webUserService.findByCondition(conditionone);
+
+        if (byCondition != null && byCondition.size() != 0) {
+//            WebUser loginUser = byCondition.get(0);
+            WebUser loginUser = new WebUser();
+            loginUser.setPassword(newPassWord);
+//            webUserService.update(loginUser);
+            Condition condition = new Condition(WebUser.class);
+            condition.createCriteria().andCondition("phone = " + mPhoneNum);
+            webUserService.UpdateByConditionSelective(loginUser, condition);
+            resetPResponse resetPResponse = new resetPResponse();
+            resetPResponse.setPhoneNum(mPhoneNum);
+            resetPResponse.setPassWord(newPassWord);
+            return ResultGenerator.genSuccessResult(resetPResponse);
+        } else {
+            return ResultGenerator.genFailResult("账号信息有误");
+        }
+    }
+
+    /**
+     * @param mRequest
+     * @param response
+     */
+    @DS(DataSourceContextHolder.One)
+    @GetMapping("/userImage")
+    public void userImage(HttpServletRequest mRequest, HttpServletResponse response) {
+
+        String Filename = mRequest.getSession().getServletContext().getRealPath("/") + "src\\main\\resource\\image\\" + "user_icon.png";
+        String contextPath = mRequest.getSession().getServletContext().getContextPath();
+
+        try {
+
+            boolean exists = new File(Filename).exists();
+            boolean exists1 = new File(contextPath).exists();
+
+
+            logger.info("路径contextPath：" + Filename + exists);
+            logger.info("路径contextPath：" + contextPath + exists1);
+            String Filename2 = "src/main/resources/image/user_icon.png";
+
+            File file1 = new File(Filename2);
+            logger.info("路径getPath：" + file1.getPath());
+            logger.info("路径getAbsolutePath：" + file1.getAbsolutePath());
+            logger.info("路径getCanonicalPath：" + file1.getCanonicalPath());
+            logger.info("路径getParent：" + file1.getParent());
+            FileInputStream fileInputStream = new FileInputStream(file1);
+            byte[] data = new byte[(int) file1.length()];
+            int length = fileInputStream.read(data);
+            fileInputStream.close();
+            response.setContentType("image/png");
+            OutputStream outputStream = response.getOutputStream();
+            outputStream.write(data);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+}

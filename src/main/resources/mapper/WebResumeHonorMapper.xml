@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebResumeHonorMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebResumeHonor">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="rid" jdbcType="VARCHAR" property="rid" />
+    <result column="honor_time" jdbcType="DATE" property="honorTime" />
+    <result column="honor_name" jdbcType="VARCHAR" property="honorName" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
+    <result column="org_id" jdbcType="INTEGER" property="orgId" />
+    <result column="rank" jdbcType="INTEGER" property="rank" />
+  </resultMap>
+</mapper>

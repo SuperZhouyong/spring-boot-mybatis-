@@ -1,3 +1,4 @@
+
 package com.resumed.sqtwin.configurer;
 
 import com.github.pagehelper.PageHelper;
@@ -5,10 +6,12 @@ import com.resumed.sqtwin.core.ProjectConstant;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import tk.mybatis.spring.mapper.MapperScannerConfigurer;
@@ -16,10 +19,12 @@ import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+
 /**
  * Mybatis & Mapper & PageHelper 配置
  */
-@Configuration
+
+/*@Configuration
 public class MybatisConfigurer {
     private static final String TAG = "MybatisConfigurer";
     private final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
@@ -27,7 +32,7 @@ public class MybatisConfigurer {
     @Bean
     public SqlSessionFactory sqlSessionFactoryBean( DataSource dataSource) throws Exception {
 
-        logger.info(TAG+"ssssss-----------"+"sqlSessionFactoryBean");
+        logger.info(TAG+"ssssss-----------"+"sqlSessionFactoryBeanON++++++++++++");
 //        System.out.println(TAG+"-------------------");
         SqlSessionFactoryBean factory = new SqlSessionFactoryBean();
         factory.setDataSource(dataSource);
@@ -68,5 +73,5 @@ public class MybatisConfigurer {
         return mapperScannerConfigurer;
     }
 
-}
+}*/
 

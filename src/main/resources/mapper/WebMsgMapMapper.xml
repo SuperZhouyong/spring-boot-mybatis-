@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebMsgMapMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebMsgMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+    <result column="module_id" jdbcType="INTEGER" property="moduleId" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="item_id" jdbcType="INTEGER" property="itemId" />
+    <result column="msg_id" jdbcType="INTEGER" property="msgId" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="rule" jdbcType="VARCHAR" property="rule" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+</mapper>

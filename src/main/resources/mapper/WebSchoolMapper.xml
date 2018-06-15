@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mappertwo.WebSchoolMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebSchool">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="schoolId" jdbcType="INTEGER" property="schoolid" />
+    <result column="cn_name" jdbcType="VARCHAR" property="cnName" />
+    <result column="en_name" jdbcType="VARCHAR" property="enName" />
+    <result column="full_cn_name" jdbcType="VARCHAR" property="fullCnName" />
+    <result column="full_en_name" jdbcType="VARCHAR" property="fullEnName" />
+    <result column="in_country" jdbcType="VARCHAR" property="inCountry" />
+    <result column="in_country_id" jdbcType="INTEGER" property="inCountryId" />
+    <result column="level" jdbcType="TINYINT" property="level" />
+    <result column="is211" jdbcType="TINYINT" property="is211" />
+    <result column="key_value" jdbcType="INTEGER" property="keyValue" />
+    <result column="is985" jdbcType="TINYINT" property="is985" />
+    <result column="is_world_famous" jdbcType="TINYINT" property="isWorldFamous" />
+    <result column="is_yj" jdbcType="TINYINT" property="isYj" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="logo_img" jdbcType="VARCHAR" property="logoImg" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="speciality_id" jdbcType="VARCHAR" property="specialityId" />
+    <result column="key_speciality" jdbcType="INTEGER" property="keySpeciality" />
+  </resultMap>
+</mapper>

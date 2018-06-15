@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebElectronicResumeMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebElectronicResume">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="rid" jdbcType="VARCHAR" property="rid" />
+    <result column="share" jdbcType="VARCHAR" property="share" />
+    <result column="showName" jdbcType="TINYINT" property="showname" />
+    <result column="showPhone" jdbcType="TINYINT" property="showphone" />
+    <result column="createAt" jdbcType="TIMESTAMP" property="createat" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+</mapper>

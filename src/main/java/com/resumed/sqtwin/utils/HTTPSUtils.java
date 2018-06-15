@@ -32,9 +32,9 @@ public final class HTTPSUtils {
     private X509TrustManager trustManager;
     private SSLSocketFactory sslSocketFactory;
 
-    public static HTTPSUtils mHttpsUtils;
+    public static volatile HTTPSUtils mHttpsUtils;
 
-    public static HTTPSUtils getInstance() {
+    public static synchronized HTTPSUtils getInstance() {
         if (mHttpsUtils == null) {
             mHttpsUtils = new HTTPSUtils();
             return mHttpsUtils;

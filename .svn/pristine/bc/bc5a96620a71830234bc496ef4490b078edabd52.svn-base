@@ -1,0 +1,347 @@
+package com.resumed.sqtwin.model.responseban;
+
+import java.util.List;
+
+/**
+ * @auther Super
+ * @data 2018/4/28 0028
+ * @time 下午 18:29
+ */
+public class AlgBean {
+
+    /**
+     * status : 1
+     * msg :
+     * data : {"certList":[{"id":4785,"name":"会计证"}],"skillList":[{"id":4785,"name":"行政事务处理能力"}],"noRelItems":[{"workExpId":4421}],"highRelItems":[{"workExpId":4420},{"workExpId":4419},{"workExpId":4418}],"noMergeItems":[{"workExpId":4420},{"workExpId":4419},{"workExpId":4418}],"scoreItem":{"rid":"RD51978801517975905","tplId":5325,"isStudent":false,"score":98.83333333333333,"work_score":70,"degree_score":20,"salary_score":5,"skill_score":1.5,"school_score":0,"major_score":0,"cert_score":0,"honor_score":0,"proj_score":0}}
+     */
+
+    private int status;
+    private String msg;
+    private DataBean data;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public DataBean getData() {
+        return data;
+    }
+
+    public void setData(DataBean data) {
+        this.data = data;
+    }
+
+    public static class DataBean {
+        /**
+         * certList : [{"id":4785,"name":"会计证"}]
+         * skillList : [{"id":4785,"name":"行政事务处理能力"}]
+         * noRelItems : [{"workExpId":4421}]
+         * highRelItems : [{"workExpId":4420},{"workExpId":4419},{"workExpId":4418}]
+         * noMergeItems : [{"workExpId":4420},{"workExpId":4419},{"workExpId":4418}]
+         * scoreItem : {"rid":"RD51978801517975905","tplId":5325,"isStudent":false,"score":98.83333333333333,"work_score":70,"degree_score":20,"salary_score":5,"skill_score":1.5,"school_score":0,"major_score":0,"cert_score":0,"honor_score":0,"proj_score":0}
+         */
+
+        private ScoreItemBean scoreItem;
+        private List<CertListBean> certList;
+        private List<SkillListBean> skillList;
+        private List<NoRelItemsBean> noRelItems;
+        private List<HighRelItemsBean> highRelItems;
+        private List<NoMergeItemsBean> noMergeItems;
+
+        public ScoreItemBean getScoreItem() {
+            return scoreItem;
+        }
+
+        public void setScoreItem(ScoreItemBean scoreItem) {
+            this.scoreItem = scoreItem;
+        }
+
+        public List<CertListBean> getCertList() {
+            return certList;
+        }
+
+        public void setCertList(List<CertListBean> certList) {
+            this.certList = certList;
+        }
+
+        public List<SkillListBean> getSkillList() {
+            return skillList;
+        }
+
+        public void setSkillList(List<SkillListBean> skillList) {
+            this.skillList = skillList;
+        }
+
+        public List<NoRelItemsBean> getNoRelItems() {
+            return noRelItems;
+        }
+
+        public void setNoRelItems(List<NoRelItemsBean> noRelItems) {
+            this.noRelItems = noRelItems;
+        }
+
+        public List<HighRelItemsBean> getHighRelItems() {
+            return highRelItems;
+        }
+
+        public void setHighRelItems(List<HighRelItemsBean> highRelItems) {
+            this.highRelItems = highRelItems;
+        }
+
+        public List<NoMergeItemsBean> getNoMergeItems() {
+            return noMergeItems;
+        }
+
+        public void setNoMergeItems(List<NoMergeItemsBean> noMergeItems) {
+            this.noMergeItems = noMergeItems;
+        }
+
+        public static class ScoreItemBean {
+            /**
+             * rid : RD51978801517975905
+             * tplId : 5325
+             * isStudent : false
+             * score : 98.83333333333333
+             * work_score : 70
+             * degree_score : 20
+             * salary_score : 5
+             * skill_score : 1.5
+             * school_score : 0
+             * major_score : 0
+             * cert_score : 0
+             * honor_score : 0
+             * proj_score : 0
+             */
+
+            private String rid;
+            private int tplId;
+            private boolean isStudent;
+            private double score;
+            private int work_score;
+            private int degree_score;
+            private int salary_score;
+            private double skill_score;
+            private int school_score;
+            private int major_score;
+            private int cert_score;
+            private int honor_score;
+            private int proj_score;
+
+            public String getRid() {
+                return rid;
+            }
+
+            public void setRid(String rid) {
+                this.rid = rid;
+            }
+
+            public int getTplId() {
+                return tplId;
+            }
+
+            public void setTplId(int tplId) {
+                this.tplId = tplId;
+            }
+
+            public boolean isIsStudent() {
+                return isStudent;
+            }
+
+            public void setIsStudent(boolean isStudent) {
+                this.isStudent = isStudent;
+            }
+
+            public double getScore() {
+                return score;
+            }
+
+            public void setScore(double score) {
+                this.score = score;
+            }
+
+            public int getWork_score() {
+                return work_score;
+            }
+
+            public void setWork_score(int work_score) {
+                this.work_score = work_score;
+            }
+
+            public int getDegree_score() {
+                return degree_score;
+            }
+
+            public void setDegree_score(int degree_score) {
+                this.degree_score = degree_score;
+            }
+
+            public int getSalary_score() {
+                return salary_score;
+            }
+
+            public void setSalary_score(int salary_score) {
+                this.salary_score = salary_score;
+            }
+
+            public double getSkill_score() {
+                return skill_score;
+            }
+
+            public void setSkill_score(double skill_score) {
+                this.skill_score = skill_score;
+            }
+
+            public int getSchool_score() {
+                return school_score;
+            }
+
+            public void setSchool_score(int school_score) {
+                this.school_score = school_score;
+            }
+
+            public int getMajor_score() {
+                return major_score;
+            }
+
+            public void setMajor_score(int major_score) {
+                this.major_score = major_score;
+            }
+
+            public int getCert_score() {
+                return cert_score;
+            }
+
+            public void setCert_score(int cert_score) {
+                this.cert_score = cert_score;
+            }
+
+            public int getHonor_score() {
+                return honor_score;
+            }
+
+            public void setHonor_score(int honor_score) {
+                this.honor_score = honor_score;
+            }
+
+            public int getProj_score() {
+                return proj_score;
+            }
+
+            public void setProj_score(int proj_score) {
+                this.proj_score = proj_score;
+            }
+        }
+
+        public static class CertListBean {
+            /**
+             * id : 4785
+             * name : 会计证
+             */
+
+            private int id;
+            private String name;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+
+        public static class SkillListBean {
+            /**
+             * id : 4785
+             * name : 行政事务处理能力
+             */
+
+            private int id;
+            private String name;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+
+        public static class NoRelItemsBean {
+            /**
+             * workExpId : 4421
+             */
+
+            private int workExpId;
+
+            public int getWorkExpId() {
+                return workExpId;
+            }
+
+            public void setWorkExpId(int workExpId) {
+                this.workExpId = workExpId;
+            }
+        }
+
+        public static class HighRelItemsBean {
+            /**
+             * workExpId : 4420
+             */
+
+            private int workExpId;
+
+            public int getWorkExpId() {
+                return workExpId;
+            }
+
+            public void setWorkExpId(int workExpId) {
+                this.workExpId = workExpId;
+            }
+        }
+
+        public static class NoMergeItemsBean {
+            /**
+             * workExpId : 4420
+             */
+
+            private int workExpId;
+
+            public int getWorkExpId() {
+                return workExpId;
+            }
+
+            public void setWorkExpId(int workExpId) {
+                this.workExpId = workExpId;
+            }
+        }
+    }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mappertwo.WebRegionMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebRegion">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+    <result column="fPy" jdbcType="VARCHAR" property="fpy" />
+  </resultMap>
+</mapper>

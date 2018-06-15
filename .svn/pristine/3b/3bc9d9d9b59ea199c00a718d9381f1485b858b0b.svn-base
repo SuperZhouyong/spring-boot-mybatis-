@@ -1,0 +1,7 @@
+package com.resumed.sqtwin.dao;
+
+import com.resumed.sqtwin.core.Mapper;
+import com.resumed.sqtwin.model.SysJobTpl;
+
+public interface SysJobTplMapper extends Mapper<SysJobTpl> {
+}

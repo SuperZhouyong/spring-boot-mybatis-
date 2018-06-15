@@ -1,0 +1,89 @@
+package com.resumed.sqtwin.model.responseban;
+
+/**
+ * @auther Super
+ * @data 2018/4/25 0025
+ * @time 上午 11:37
+ */
+public class UserInfo {
+    //姓名
+    private String name ;
+    // 生日
+    private String birthday ;
+    // 电话号码
+    private String phoneNum ;
+    // 邮箱
+    private String emilNum ;
+    // 地址详细
+    private String adressDetail ;
+    //照片
+    private String photoDesc ;
+    //总述
+    private String allDesc ;
+    // 意向城市
+    private String intentionCity ;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public String getEmilNum() {
+        return emilNum;
+    }
+
+    public void setEmilNum(String emilNum) {
+        this.emilNum = emilNum;
+    }
+
+    public String getAdressDetail() {
+        return adressDetail;
+    }
+
+    public void setAdressDetail(String adressDetail) {
+        this.adressDetail = adressDetail;
+    }
+
+    public String getPhotoDesc() {
+        return photoDesc;
+    }
+
+    public void setPhotoDesc(String photoDesc) {
+        this.photoDesc = photoDesc;
+    }
+
+    public String getAllDesc() {
+        return allDesc;
+    }
+
+    public void setAllDesc(String allDesc) {
+        this.allDesc = allDesc;
+    }
+
+    public String getIntentionCity() {
+        return intentionCity;
+    }
+
+    public void setIntentionCity(String intentionCity) {
+        this.intentionCity = intentionCity;
+    }
+}

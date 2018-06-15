@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebUserDetailMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebUserDetail">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="marital" jdbcType="TINYINT" property="marital" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="household_city_name" jdbcType="VARCHAR" property="householdCityName" />
+    <result column="household_city_id" jdbcType="INTEGER" property="householdCityId" />
+    <result column="work_status" jdbcType="TINYINT" property="workStatus" />
+    <result column="salary_start" jdbcType="INTEGER" property="salaryStart" />
+    <result column="salary_end" jdbcType="INTEGER" property="salaryEnd" />
+    <result column="salary_discuss" jdbcType="TINYINT" property="salaryDiscuss" />
+    <result column="qq" jdbcType="BIGINT" property="qq" />
+    <result column="weChat" jdbcType="VARCHAR" property="wechat" />
+    <result column="sina" jdbcType="VARCHAR" property="sina" />
+    <result column="head_ture_img" jdbcType="VARCHAR" property="headTureImg" />
+    <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+    <result column="head_img_status" jdbcType="TINYINT" property="headImgStatus" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="readme" jdbcType="LONGVARCHAR" property="readme" />
+  </resultMap>
+    <update id="UpdateIconImage" parameterType="String">
+        update web_user_detail
+
+        set head_img = #{icon_image},update_at = now()
+
+        where gid = #{gid};
+       <!-- &lt;selectKey resultType="com.resumed.sqtwin.model.WebUserDetail" order="AFTER" &gt;
+            select
+
+        &lt;/selectKey&gt;-->
+    </update>
+</mapper>

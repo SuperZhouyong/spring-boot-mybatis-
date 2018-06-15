@@ -1,0 +1,11 @@
+package com.resumed.sqtwin.dao.mapperone;
+
+import com.resumed.sqtwin.core.Mapper;
+import com.resumed.sqtwin.model.WebUserDetail;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+
+public interface WebUserDetailMapper extends Mapper<WebUserDetail> {
+    void UpdateIconImage(@Param(value = "gid") String gid,@Param(value = "icon_image") String icon_image,@Param(value = "update_date") Date updateDate);
+}

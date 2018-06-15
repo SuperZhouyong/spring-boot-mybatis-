@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.WebProfileMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebProfile">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="rid" jdbcType="VARCHAR" property="rid" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="marital" jdbcType="TINYINT" property="marital" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="household_city_name" jdbcType="VARCHAR" property="householdCityName" />
+    <result column="household_city_id" jdbcType="INTEGER" property="householdCityId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="work_status" jdbcType="TINYINT" property="workStatus" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="phone_status" jdbcType="TINYINT" property="phoneStatus" />
+    <result column="salary_start" jdbcType="INTEGER" property="salaryStart" />
+    <result column="salary_end" jdbcType="INTEGER" property="salaryEnd" />
+    <result column="salary_discuss" jdbcType="TINYINT" property="salaryDiscuss" />
+    <result column="avatar_status" jdbcType="TINYINT" property="avatarStatus" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <result column="avatar_ture_url" jdbcType="VARCHAR" property="avatarTureUrl" />
+  </resultMap>
+</mapper>

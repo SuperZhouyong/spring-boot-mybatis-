@@ -1,5 +1,6 @@
 package com.resumed.sqtwin.configurer;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.google.common.collect.Maps;
 import org.apache.juli.logging.LogFactory;
 import org.slf4j.Logger;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
@@ -19,11 +21,13 @@ import java.util.Map;
  * @data 2018/4/10 0010
  * @time 下午 16:35
  */
+
 @Configuration
 public class DataSourceConfigurer {
     private final Logger logger = LoggerFactory.getLogger(DataSourceConfigurer.class);
 
     @Bean(name = "oneData")
+    @Primary
     @ConfigurationProperties(prefix = "spring.datasource.one")
     public DataSource oneDataSource() {
 //        System.out.println("主配");
@@ -44,7 +48,7 @@ public class DataSourceConfigurer {
                 .build();
     }
 
-    @Primary
+   /* @Primary
     @Bean(name = "dynamicDS")
     public DataSource dataSource() {
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
@@ -56,5 +60,5 @@ public class DataSourceConfigurer {
         DataSourceContextHolder.supportList.addAll(targetDataSources.keySet());
 
         return dynamicDataSource;
-    }
+    }*/
 }

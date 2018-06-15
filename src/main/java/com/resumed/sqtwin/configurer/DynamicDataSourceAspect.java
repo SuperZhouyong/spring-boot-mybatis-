@@ -28,22 +28,13 @@ import java.util.Enumeration;
 public class DynamicDataSourceAspect {
 
 
-    private static final  Logger logger = LoggerFactory.getLogger(DynamicDataSourceAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(DynamicDataSourceAspect.class);
     private ThreadLocal<Long> startTime = new ThreadLocal<Long>();
 
     @Pointcut("execution(public * com.resumed.*.web..*.*(..))")
     public void webLog() {
     }
-   /* @Pointcut("execution(public * com.resumed.*.configer..*.*(..))")
-    public void webLog() {
-    }*/
 
-    /* @Pointcut("execution(public * com.resumed.*.*..*.*(..))")
-     public void webLog() {
-     }*/
-    /*    @Pointcut("execution(public * com.resumed.*.web..*.*(..))") // 切入点表达式
-        public void privilege() {
-        }*/
     @Around("webLog()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
 
@@ -60,7 +51,6 @@ public class DynamicDataSourceAspect {
         // 记录下请求内容
 
 
-
         logger.info("URL : " + request.getRequestURL().toString());
 
         logger.info("HTTP_METHOD : " + request.getMethod());
@@ -73,7 +63,7 @@ public class DynamicDataSourceAspect {
 
         //获取所有参数方法一：
         Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()){
+        while (headerNames.hasMoreElements()) {
             String headParaName = headerNames.nextElement();
             logger.info("HeadParaName : " + headParaName + "  :  " + request.getHeader(headParaName));
 
@@ -99,41 +89,6 @@ public class DynamicDataSourceAspect {
     public void doBefore(JoinPoint joinPoint) {
         logger.info("WebLogAspect.doBefore()");
 
-//        public void doBefore(ProceedingJoinPoint joinPoint) throws Throwable {
-        /*startTime.set(System.currentTimeMillis());
-        // 接收到请求，记录请求内容
-
-        logger.info("WebLogAspect.doBefore()");
-
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-
-        HttpServletRequest request = attributes.getRequest();
-
-//        long start = System.currentTimeMillis();
-        // 记录下请求内容
-
-        logger.info("URL : " + request.getRequestURL().toString());
-
-        logger.info("HTTP_METHOD : " + request.getMethod());
-
-        logger.info("IP : " + request.getRemoteAddr());
-
-        logger.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-
-        logger.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
-
-        //获取所有参数方法一：
-
-        Enumeration<String> enu = request.getParameterNames();
-
-        while (enu.hasMoreElements()) {
-
-            String paraName = (String) enu.nextElement();
-            logger.info("paraName : " + paraName + "  :  " + request.getParameter(paraName));
-//            System.out.println(paraName+": "+request.getParameter(paraName));
-
-        }*/
-
 
     }
 
@@ -148,7 +103,7 @@ public class DynamicDataSourceAspect {
 
     @Before("@annotation(DS)")
     public void beforeSwitchDS(JoinPoint point) {
-
+        logger.info("===============上下文赋值完成:进入到切面开始");
         //获得当前访问的class
         Class<?> className = point.getTarget().getClass();
 
@@ -185,9 +140,7 @@ public class DynamicDataSourceAspect {
 
     }
 
-
-
-  /*  @Pointcut("execution (* com.resumed.sqtwin.dao.*.addSove*(..))")
+   /* @Pointcut("execution (* com.resumed.sqtwin.dao.*.addSove*(..))")
     public void readMethodPointcut() {
     }
 

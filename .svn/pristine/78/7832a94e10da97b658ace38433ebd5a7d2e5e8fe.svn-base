@@ -1,0 +1,51 @@
+package com.resumed.sqtwin.model.responseban;
+
+import java.util.List;
+
+/**
+ * @auther Super
+ * @data 2018/4/25 0025
+ * @time 上午 11:37
+ */
+public class EducationInfo {
+    //起止时间
+    private List<String> startEndDate;
+    // 学校名字
+    private List<String> schoolName;
+    //专业名字
+    private List<String> majorName;
+    // 综述
+    private List<String> allDesc;
+
+    public List<String> getStartEndDate() {
+        return startEndDate;
+    }
+
+    public void setStartEndDate(List<String> startEndDate) {
+        this.startEndDate = startEndDate;
+    }
+
+    public List<String> getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(List<String> schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    public List<String> getMajorName() {
+        return majorName;
+    }
+
+    public void setMajorName(List<String> majorName) {
+        this.majorName = majorName;
+    }
+
+    public List<String> getAllDesc() {
+        return allDesc;
+    }
+
+    public void setAllDesc(List<String> allDesc) {
+        this.allDesc = allDesc;
+    }
+}

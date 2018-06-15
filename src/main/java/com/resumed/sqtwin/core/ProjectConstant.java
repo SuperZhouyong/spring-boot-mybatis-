@@ -7,7 +7,9 @@ public final class ProjectConstant {
     public static final String BASE_PACKAGE = "com.resumed.sqtwin";//项目基础包名称，根据自己公司的项目修改
 
     public static final String MODEL_PACKAGE = BASE_PACKAGE + ".model";//Model所在包
-    public static final String MAPPER_PACKAGE = BASE_PACKAGE + ".dao";//Mapper所在包
+    public static final String MAPPER_PACKAGE = BASE_PACKAGE + ".dao.mapperone";//Mapperone所在包
+    public static final String MAPPER_PACKAGE_TWO= BASE_PACKAGE + ".dao.mappertwo";//MapperTwo所在包
+    public static final String MAPPER_PACKAGE_THREE= BASE_PACKAGE + ".dao.mapperthree";//MapperTwo所在包
     public static final String SERVICE_PACKAGE = BASE_PACKAGE + ".service";//Service所在包
     public static final String SERVICE_IMPL_PACKAGE = SERVICE_PACKAGE + ".impl";//ServiceImpl所在包
     public static final String CONTROLLER_PACKAGE = BASE_PACKAGE + ".web";//Controller所在包

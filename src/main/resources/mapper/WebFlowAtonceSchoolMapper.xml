@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mapperone.WebFlowAtonceSchoolMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.WebFlowAtonceSchool">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="tplLevel" jdbcType="INTEGER" property="tpllevel" />
+    <result column="schoolProvinceId" jdbcType="INTEGER" property="schoolprovinceid" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="provinceId" jdbcType="INTEGER" property="provinceid" />
+  </resultMap>
+</mapper>

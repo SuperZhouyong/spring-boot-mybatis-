@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mappertwo.SysJobTplMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.SysJobTpl">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="job_tpl_id" jdbcType="INTEGER" property="jobTplId" />
+    <result column="no" jdbcType="INTEGER" property="no" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="functionId" jdbcType="INTEGER" property="functionid" />
+    <result column="people_number" jdbcType="INTEGER" property="peopleNumber" />
+    <result column="is_numbers_some" jdbcType="TINYINT" property="isNumbersSome" />
+    <result column="work_nature" jdbcType="TINYINT" property="workNature" />
+    <result column="education" jdbcType="TINYINT" property="education" />
+    <result column="job_exp" jdbcType="TINYINT" property="jobExp" />
+    <result column="same_job_exp" jdbcType="TINYINT" property="sameJobExp" />
+    <result column="manage_exp" jdbcType="TINYINT" property="manageExp" />
+    <result column="overseas_exp" jdbcType="TINYINT" property="overseasExp" />
+    <result column="salary_start" jdbcType="INTEGER" property="salaryStart" />
+    <result column="salary_end" jdbcType="INTEGER" property="salaryEnd" />
+    <result column="salary_level" jdbcType="INTEGER" property="salaryLevel" />
+    <result column="salary_discuss" jdbcType="TINYINT" property="salaryDiscuss" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="publish_at" jdbcType="TIMESTAMP" property="publishAt" />
+    <result column="last_edit_at" jdbcType="TIMESTAMP" property="lastEditAt" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="custom_job_exp" jdbcType="VARCHAR" property="customJobExp" />
+    <result column="custom_same_job_exp" jdbcType="VARCHAR" property="customSameJobExp" />
+    <result column="job_exp_start" jdbcType="VARCHAR" property="jobExpStart" />
+    <result column="job_exp_end" jdbcType="VARCHAR" property="jobExpEnd" />
+    <result column="same_job_exp_start" jdbcType="VARCHAR" property="sameJobExpStart" />
+    <result column="same_job_exp_end" jdbcType="VARCHAR" property="sameJobExpEnd" />
+    <result column="need_handle" jdbcType="TINYINT" property="needHandle" />
+    <result column="tagId" jdbcType="INTEGER" property="tagid" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="merge" jdbcType="TINYINT" property="merge" />
+    <result column="is_manager" jdbcType="TINYINT" property="isManager" />
+    <result column="mapping_to" jdbcType="INTEGER" property="mappingTo" />
+    <result column="unlimited" jdbcType="TINYINT" property="unlimited" />
+    <result column="industry_list" jdbcType="VARCHAR" property="industryList" />
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <select id="queryIntention" resultType="com.resumed.sqtwin.model.SysJobTpl">
+
+    SELECT
+    jt.job_tpl_id,
+    jt. NAME
+    FROM
+    sqtcom.sys_job_tpl AS jt
+    RIGHT JOIN sqtcom.da_i_tpl AS t ON t.tplId = jt.job_tpl_id
+    INNER JOIN sqtcom.sys_proflib_function AS f ON jt.functionId = f.id
+    WHERE
+
+    IF (
+    f.type = 2,
+    (jt.`level` &lt; 6),
+    jt.`level` &lt; 5
+    )
+    AND (
+    t.tplIdOriginal IN (
+    SELECT
+    intension_function_id
+    FROM
+    sqtresumed.web_diagnose_resume_list
+    WHERE
+    gid = #{gid}
+    OR t.tplIdOriginal IN (
+    SELECT
+    tpl_id
+    FROM
+    sqtresumed.web_resume_work_exp
+    WHERE
+    gid = #{gid}
+    )
+    )
+    )	GROUP BY
+    jt.job_tpl_id , jt. NAME
+    LIMIT 100
+  </select>
+</mapper>

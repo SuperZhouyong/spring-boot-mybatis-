@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.resumed.sqtwin.dao.mappertwo.SysJobIndustryTplMapper">
+  <resultMap id="BaseResultMap" type="com.resumed.sqtwin.model.SysJobIndustryTpl">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="job_industry_tpl_id" jdbcType="INTEGER" property="jobIndustryTplId" />
+    <result column="job_tpl_id" jdbcType="INTEGER" property="jobTplId" />
+    <result column="industryId" jdbcType="INTEGER" property="industryid" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+</mapper>

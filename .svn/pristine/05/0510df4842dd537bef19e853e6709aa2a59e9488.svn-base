@@ -1,0 +1,18 @@
+package com.resumed.sqtwin.model.responseban;
+
+/**
+ * @auther Super
+ * @data 2018/4/17 0017
+ * @time 下午 14:35
+ */
+public class UpdaeResumeResponse {
+    private String rid ;
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+}
