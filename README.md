@@ -1,11 +1,5 @@
 
-
- 
-
- 
-
- 
-## 技术选型&文档
+## 技术选型
 - Spring Boot
 - MyBatis
 - MyBatisb通用Mapper插件
